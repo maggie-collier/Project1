@@ -63,7 +63,7 @@ public class StopWatch {
 
 
 		// TODO: DELETE ME LATER
-		// You can use this main funciton for testing if you'd like. This might be easier
+		// You can use this main function for testing if you'd like. This might be easier
 		// if you don't have the GUI set up yet and you'd like to play around.
     public static void main (String[] args) {
 			StopWatch stopwatch = new StopWatch();
