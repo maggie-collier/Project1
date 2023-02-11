@@ -15,6 +15,10 @@ import javax.swing.JOptionPane;
 public class StopWatch {
 
 	// Use this space to create instance variables that will keep track of each timer's values
+	private int minutes;
+	private int seconds;
+	private int milliseconds;
+
 
 	/******************************************************************
 	  Default constructor for objects in StopWatch class 
@@ -23,13 +27,17 @@ public class StopWatch {
 	public StopWatch() {
 		super();
 
-		System.out.println("Inside constructor");
-		// Set what happens when you create an default stopwatch class
+		System.out.println("Inside stopwatch constructor");
+		// Set what happens when you create a default stopwatch class
 		// Suggestion: Maybe set your instance variables to a good default?
 		// I removed others, but it's obvious you'll need a "minutes" variable,
 		// so we will set it to 0 when you create a new StopWatch object.
 
-		// minutes = 0;
+		// valueTimer1 = timerPanel1.javaTimer;
+
+		this.minutes = 0;
+		this.seconds = 0;
+		this.milliseconds = 0;
 	}
 
 
@@ -47,9 +55,17 @@ public class StopWatch {
 	  @param none
 	  @return minutes integer from stopwatch
 	 *****************************************************************/
-	// public int getMinutes() {
-	// 	return minutes;
-	// }
+	public int getMinutes() {
+		return this.minutes;
+	}
+
+	public int getSeconds() {
+		return this.seconds;
+	}
+
+	public int getMilliseconds() {
+		return this.milliseconds;
+	}
 
 	/******************************************************************
 	  Sets the amount of minutes on the stopwatch
@@ -57,16 +73,42 @@ public class StopWatch {
 	  @param minutes to be set for the StopWatch
 	  @return none
 	 *****************************************************************/
-	// public void setMinutes(int minutes) {
-	// 	this.minutes = minutes;
-	// }
+	public void setMinutes(int minutes) {
+		this.minutes = minutes;
+	}
 
+	public void setSeconds(int seconds) {
+		this.seconds = seconds;
+	}	
 
-		// TODO: DELETE ME LATER
-		// You can use this main function for testing if you'd like. This might be easier
-		// if you don't have the GUI set up yet and you'd like to play around.
-    public static void main (String[] args) {
-			StopWatch stopwatch = new StopWatch();
+	public void setMilliseconds(int milliseconds) {
+		this.milliseconds = milliseconds;
+	}
 
+	public void add(int timeDelay) {
+		this.milliseconds += timeDelay;
+	}
+
+	public String displayTime() {
+		if (this.milliseconds > 999) {
+			this.seconds++;
+			this.milliseconds = 0;
 		}
+		if (this.seconds > 59) {
+			this.minutes++;
+			this.seconds = 0;
+		}
+		return "" + this.minutes + ":" + this.seconds + ":" + this.milliseconds;
+		
+	}
+
+	// TODO: DELETE ME LATER
+	// You can use this main function for testing if you'd like. This might be easier
+	// if you don't have the GUI set up yet and you'd like to play around.
+	public static void main (String[] args) {
+		StopWatch stopwatch = new StopWatch();
+
+	}
+
+
 }
