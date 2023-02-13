@@ -18,8 +18,11 @@ public class StopWatch {
 	private int minutes;
 	private int seconds;
 	private int milliseconds;
-
-
+	private String digMin;
+	private String digSec;
+	private String digMil;
+	
+	
 	/******************************************************************
 	  Default constructor for objects in StopWatch class 
 	  that sets the StopWatch to zero
@@ -33,11 +36,10 @@ public class StopWatch {
 		// I removed others, but it's obvious you'll need a "minutes" variable,
 		// so we will set it to 0 when you create a new StopWatch object.
 
-		// valueTimer1 = timerPanel1.javaTimer;
-
 		this.minutes = 0;
 		this.seconds = 0;
 		this.milliseconds = 0;
+
 	}
 
 
@@ -89,17 +91,61 @@ public class StopWatch {
 		this.milliseconds += timeDelay;
 	}
 
-	public String displayTime() {
+	public void checkTime(boolean check) {
+
+	}
+
+	public void add(String inputMin, String inputSec, String inputMil) {
+		this.minutes += Integer.parseInt(inputMin);
+		this.seconds += Integer.parseInt(inputSec);
+		this.milliseconds += Integer.parseInt(inputMil);
+	}
+
+	public void sub(String inputMin, String inputSec, String inputMil) {
+		this.minutes = this.minutes - Integer.parseInt(inputMin);
+		this.seconds = this.seconds - Integer.parseInt(inputSec);
+		this.milliseconds = this.milliseconds - Integer.parseInt(inputMil);	
+	}
+
+	public void reset() {
+		this.minutes = 0;
+		this.seconds = 0;
+		this.milliseconds = 0;
+	}
+
+	public String displayTime() {	
+		
+		digMin = "" + this.minutes;
+		digSec = "" + this.seconds;
+		digMil = "" + this.milliseconds;
+
 		if (this.milliseconds > 999) {
 			this.seconds++;
 			this.milliseconds = 0;
 		}
+
 		if (this.seconds > 59) {
 			this.minutes++;
 			this.seconds = 0;
 		}
-		return "" + this.minutes + ":" + this.seconds + ":" + this.milliseconds;
-		
+
+		if (this.minutes < 10) {
+			digMin = "0" + this.minutes;
+		}
+
+		if (this.seconds < 10) {
+			digSec = "0" + this.seconds;
+		}
+
+		if (this.milliseconds < 100) {
+			digMil = "0" + this.milliseconds;
+		}
+
+		if (this.milliseconds < 10) {
+			digMil = "00" + this.milliseconds;
+		}
+
+		return "" + digMin + ":" + digSec + ":" + digMil;
 	}
 
 	// TODO: DELETE ME LATER

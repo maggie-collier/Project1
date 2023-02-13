@@ -18,8 +18,11 @@ public class TimerPanel extends JPanel {
 	private static final int TIME_DELAY = 10;
 	
 	private StopWatch stopwatch;
+
 	private Timer javaTimer;
+	
 	private TimerListener timerListener; 
+	
 	private JButton startButton;
 	private JButton stopButton;
 	private JButton addButton;
@@ -27,22 +30,21 @@ public class TimerPanel extends JPanel {
 	private JButton saveButton;
 	private JButton loadButton;
 	private JButton resetButton;
+	
 	private JTextField minutesField;
 	private JLabel minutesLabel;		
 	private JTextField secondsField;
 	private JLabel secondsLabel;
 	private JTextField millisecondsField;
 	private JLabel millisecondsLabel;	
-	private JLabel timerLabel;
 
-	private int count;
+	private JLabel timerLabel;
 	
 	// constructor
 	public TimerPanel() {
 		System.out.println("Inside timerPanel constructor");
 		// Instantiate a stopwatch (object). Will need ones with different parameters
 		stopwatch = new StopWatch();
-		count = 0;
 
 		// Create a listener
 		timerListener = new TimerListener();
@@ -149,10 +151,10 @@ public class TimerPanel extends JPanel {
 		public void actionPerformed (ActionEvent event) {
 			
 			stopwatch.add(TIME_DELAY);
+			timerLabel.setText(stopwatch.displayTime());
+			
 			// timerLabel.setText(stopwatch.displayTime());
 			
-			timerLabel.setText(stopwatch.displayTime());
-			// System.out.println(count);
 			
 		}
 	}
@@ -160,44 +162,47 @@ public class TimerPanel extends JPanel {
 	public class ButtonListener implements ActionListener {
 		
 		public void actionPerformed(ActionEvent event) {			
-			int minutes, seconds, milliseconds;
-			// minutes = Integer.valueOf(minutesField);
-			// seconds = Integer.valueOf(secondsField);
-			// milliseconds = Integer.valueOf(millisecondsField);
-			
-
-
-
+			String inputMin = minutesField.getText();
+			String inputSec = secondsField.getText();
+			String inputMil = millisecondsField.getText();
+		
 			if (event.getSource() == startButton) {
 				System.out.println("press start");
 				javaTimer.start();
 			}
+
 			if (event.getSource() == stopButton) {
 				System.out.println("press stop");
 				javaTimer.stop();
 			}
+
 			if (event.getSource() == addButton) {
 				System.out.println("press add");
-				// javaTimer.add(); add minutes, seconds, milliseconds to javaTimer
-
+				stopwatch.add(inputMin, inputSec, inputMil);
 			}
+
 			if (event.getSource() == subButton) {
 				System.out.println("press sub");
-				// javaTimer.sub();
+				stopwatch.sub(inputMin, inputSec, inputMil);
 			}
+
 			if (event.getSource() == saveButton) {
 				System.out.println("press save");
 				// int[] timeSave = new int[]{javaTimer};
 			}
+
 			if (event.getSource() == loadButton) {
 				System.out.println("press load");
 			// 	// access timeSave[]
 			// 	javaTimer = timeSave[0];
 			
 			}
+
 			if (event.getSource() == resetButton) {
 				System.out.println("press reset");
-				// javaTimer = 0;
+				// event.getSource() == stopButton;
+				timerLabel.setText("00:00:000");
+				stopwatch.reset();
 
 			}
 		}
