@@ -2,6 +2,11 @@ import java.text.DecimalFormat;
 
 import java.io.*;
 import java.util.Scanner;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.swing.JOptionPane;
 
@@ -21,6 +26,7 @@ public class StopWatch {
 	private String digMin;
 	private String digSec;
 	private String digMil;
+	private String timeDisplay;
 	
 	
 	/******************************************************************
@@ -101,6 +107,11 @@ public class StopWatch {
 		this.milliseconds += Integer.parseInt(inputMil);
 	}
 
+	public String addDisplay() {
+		String addDis = "" + this.minutes + ":" + this.seconds + ":" + this.milliseconds;
+		return addDis;
+	}
+
 	public void sub(String inputMin, String inputSec, String inputMil) {
 		this.minutes = this.minutes - Integer.parseInt(inputMin);
 		this.seconds = this.seconds - Integer.parseInt(inputSec);
@@ -145,7 +156,26 @@ public class StopWatch {
 			digMil = "00" + this.milliseconds;
 		}
 
-		return "" + digMin + ":" + digSec + ":" + digMil;
+		timeDisplay = "" + digMin + ":" + digSec + ":" + digMil;
+		return timeDisplay;
+	}
+
+	public void save() {
+		Path path = Paths.get("C:\\Coding\\Project1\\Project1Text.txt");
+		String str = timeDisplay;
+		try {
+			Files.writeString(path, str, StandardCharsets.UTF_8);
+		}
+		catch (IOException ex) {
+			System.out.println("Invalid Path");
+		}
+	}
+
+	public String load() throws IOException {
+		Path Project1Text = Path.of("C:\\Coding\\Project1\\Project1Text.txt");
+		String loadValue = Files.readString(Project1Text);
+		System.out.println(loadValue);
+		return loadValue;
 	}
 
 	// TODO: DELETE ME LATER

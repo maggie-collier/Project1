@@ -5,6 +5,11 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import java.lang.Integer;
 import java.lang.String;
+import java.io.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 /**********************************************************************
 Creates a stop watch panel.
 
@@ -179,6 +184,7 @@ public class TimerPanel extends JPanel {
 			if (event.getSource() == addButton) {
 				System.out.println("press add");
 				stopwatch.add(inputMin, inputSec, inputMil);
+				timerLabel.setText(stopwatch.addDisplay());
 			}
 
 			if (event.getSource() == subButton) {
@@ -188,13 +194,17 @@ public class TimerPanel extends JPanel {
 
 			if (event.getSource() == saveButton) {
 				System.out.println("press save");
-				// int[] timeSave = new int[]{javaTimer};
+				stopwatch.save();
 			}
 
 			if (event.getSource() == loadButton) {
 				System.out.println("press load");
-			// 	// access timeSave[]
-			// 	javaTimer = timeSave[0];
+				try {
+					timerLabel.setText(stopwatch.load());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			
 			}
 
