@@ -184,12 +184,13 @@ public class TimerPanel extends JPanel {
 			if (event.getSource() == addButton) {
 				System.out.println("press add");
 				stopwatch.add(inputMin, inputSec, inputMil);
-				timerLabel.setText(stopwatch.addDisplay());
+				timerLabel.setText(stopwatch.displayTime());
 			}
 
 			if (event.getSource() == subButton) {
 				System.out.println("press sub");
 				stopwatch.sub(inputMin, inputSec, inputMil);
+				timerLabel.setText(stopwatch.displayTime());
 			}
 
 			if (event.getSource() == saveButton) {

@@ -107,11 +107,6 @@ public class StopWatch {
 		this.milliseconds += Integer.parseInt(inputMil);
 	}
 
-	public String addDisplay() {
-		String addDis = "" + this.minutes + ":" + this.seconds + ":" + this.milliseconds;
-		return addDis;
-	}
-
 	public void sub(String inputMin, String inputSec, String inputMil) {
 		this.minutes = this.minutes - Integer.parseInt(inputMin);
 		this.seconds = this.seconds - Integer.parseInt(inputSec);
