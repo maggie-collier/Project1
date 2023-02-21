@@ -24,7 +24,7 @@ public class TimerPanel extends JPanel {
 	
 	private StopWatch stopwatch;
 
-	private Timer javaTimer;
+	Timer javaTimer;
 	
 	private TimerListener timerListener; 
 	
@@ -185,12 +185,18 @@ public class TimerPanel extends JPanel {
 				System.out.println("press add");
 				stopwatch.add(inputMin, inputSec, inputMil);
 				timerLabel.setText(stopwatch.displayTime());
+				minutesField.setText("0");
+				secondsField.setText("0");
+				millisecondsField.setText("0");
 			}
 
 			if (event.getSource() == subButton) {
 				System.out.println("press sub");
 				stopwatch.sub(inputMin, inputSec, inputMil);
 				timerLabel.setText(stopwatch.displayTime());
+				minutesField.setText("0");
+				secondsField.setText("0");
+				millisecondsField.setText("0");
 			}
 
 			if (event.getSource() == saveButton) {
@@ -214,7 +220,9 @@ public class TimerPanel extends JPanel {
 				// event.getSource() == stopButton;
 				timerLabel.setText("00:00:000");
 				stopwatch.reset();
-
+				minutesField.setText("0");
+				secondsField.setText("0");
+				millisecondsField.setText("0");
 			}
 		}
 	}

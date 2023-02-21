@@ -97,9 +97,37 @@ public class StopWatch {
 		this.milliseconds += timeDelay;
 	}
 
-	public void checkTime(boolean check) {
+	// public void checkTime() {
+	// 	if (this.minutes < 0) {
+	// 		// this.seconds = this.seconds + (60 * Math.abs(0 - this.minutes));
+	// 		this.minutes = 0;
+	// 	}
+	// 	if (this.seconds < 0) {
+	// 		if (this.minutes > 0) {
+	// 			this.minutes = this.minutes - (Math.floor(Integer.parseInt(Math.abs(this.seconds))) / 60);
+	// 			this.seconds = 60 - Math.abs(this.seconds);
+	// 			}
+	// 		}
+	// 		else {
+	// 			this.seconds = 0;
+	// 		}
+	// 	}
+	// 	if (this.milliseconds < 0) {
+	// 		if (this.seconds > 0) {
+	// 			this.seconds = this.seconds - 1;
+	// 			this.milliseconds = 1000 = Math.abs(this.milliseconds);
+	// 		}
+	// 		else {
+	// 			this.milliseconds = 0;
+	// 		}
+	// 	}
 
-	}
+// 		}
+// // bad input
+// 		// if (this.milliseconds < 0 && this.minutes == 0 && this.seconds == 0) {
+// 		// 	this.milliseconds = 0;
+// 		// }
+// 	}
 
 	public void add(String inputMin, String inputSec, String inputMil) {
 		this.minutes += Integer.parseInt(inputMin);
@@ -108,9 +136,32 @@ public class StopWatch {
 	}
 
 	public void sub(String inputMin, String inputSec, String inputMil) {
-		this.minutes = this.minutes - Integer.parseInt(inputMin);
-		this.seconds = this.seconds - Integer.parseInt(inputSec);
-		this.milliseconds = this.milliseconds - Integer.parseInt(inputMil);	
+		int msecMin = this.minutes * 60000;
+		int msecSec = this.seconds * 1000;
+
+		int msecInputMin = Integer.parseInt(inputMin) * 60000;
+		int msecInputSec = Integer.parseInt(inputSec) * 1000;
+		int msecInputMil = Integer.parseInt(inputMil);
+		int mInput = msecInputMin + msecInputSec + msecInputMil;
+
+		int totalTime = msecMin + msecSec + this.milliseconds;
+		int finalTime = totalTime - mInput;
+
+		this.minutes = finalTime / 60000;
+		this.seconds = finalTime - (this.minutes * 60000) / 1000;
+		this.milliseconds = finalTime - (this.minutes * 60000) % 1000; 
+		
+		// this.minutes = this.minutes - Integer.parseInt(inputMin);
+		// this.seconds = this.seconds - Integer.parseInt(inputSec);
+		// this.milliseconds = this.milliseconds - Integer.parseInt(inputMil);	
+
+		// this.minutes = minOnTimer - inputMin - minsToSecs
+		// this.seconds = secOnTimer - inputSec - secsToMils + minsToSecs
+		// this.milliseconds = msecOnTimer - inputMil + secsToMils
+		// this.minutes = ((this.minutes * 60) + this.seconds - (Integer.parseInt(inputMin) * 60) - Integer.parseInt(inputSec)) / 60;
+		// this.seconds = this.seconds - (((this.minutes * 60) + this.seconds - (Integer.parseInt(inputMin) * 60) - Integer.parseInt(inputSec))  % 60); 
+		// }
+		
 	}
 
 	public void reset() {

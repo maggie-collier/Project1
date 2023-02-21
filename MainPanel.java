@@ -70,7 +70,9 @@ public class MainPanel extends JPanel {
 			// if (event.getSource() == /*Button created */ ) 
 			if (event.getSource() == pauseButton) {
 				System.out.println("press pause");
-				
+				timerPanel1.javaTimer.stop();
+				timerPanel2.javaTimer.stop();
+				timerPanel3.javaTimer.stop();	
 				// pause all timers
 			}
 		}
