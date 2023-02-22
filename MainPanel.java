@@ -22,16 +22,9 @@ public class MainPanel extends JPanel {
 	private JButton pauseButton;
 
 	public MainPanel () {
-		System.out.println("Inside MainPanel constructor");
-
 		timerPanel1 = new TimerPanel();
-		System.out.println("panel 1 made");
-
 		timerPanel2 = new TimerPanel();
-		System.out.println("panel 2 made");
-
 		timerPanel3 = new TimerPanel();
-		System.out.println("panel 3 made");
 
 		pauseButton = new JButton("PAUSE");
 
@@ -53,10 +46,12 @@ public class MainPanel extends JPanel {
 		loc.gridy = 40;
 		loc.insets.bottom = 10;
 		add(timerPanel2, loc);
+
 		loc.gridx = 0;
 		loc.gridy = 80;
 		loc.insets.bottom = 10;
 		add(timerPanel3, loc);
+
 		loc.gridx = 0;
 		loc.gridy = 90;
 		loc.insets.bottom = 10;
@@ -69,7 +64,6 @@ public class MainPanel extends JPanel {
 			
 			// if (event.getSource() == /*Button created */ ) 
 			if (event.getSource() == pauseButton) {
-				System.out.println("press pause");
 				timerPanel1.javaTimer.stop();
 				timerPanel2.javaTimer.stop();
 				timerPanel3.javaTimer.stop();	

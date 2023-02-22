@@ -36,7 +36,6 @@ public class StopWatch {
 	public StopWatch() {
 		super();
 
-		System.out.println("Inside stopwatch constructor");
 		// Set what happens when you create a default stopwatch class
 		// Suggestion: Maybe set your instance variables to a good default?
 		// I removed others, but it's obvious you'll need a "minutes" variable,
@@ -97,27 +96,35 @@ public class StopWatch {
 		this.milliseconds += timeDelay;
 	}
 
-	public boolean checkInput(String inputMin, String inputSec, String inputMil, boolean good) {
+	public boolean checkInput(String inputMin, String inputSec, String inputMil) {
 		String inputs = inputMin + inputSec + inputMil;
+		boolean good = false;
+		int error = 0;
 		System.out.println("checking input");
+		if (inputMin.isEmpty()) {
+			error++;
+		}
+		if (inputSec.isEmpty()) {
+			error++;
+		}
+		if (inputMil.isEmpty()) {
+			error++;
+		}
 		if (!inputs.isEmpty()) {
 			for (int i = 0; i < inputs.length(); i++) {
 				if (!Character.isDigit(inputs.charAt(i))) {
-					good = false;
+					error++;
 				}
-				if(inputs.charAt(i) == '-') {
-					good = false;
-				}
-				else {
-					good = true;
+				if (inputs.charAt(i) == '-') {
+					error++;
 				}
 			}
 		}
-		if (inputMin.isEmpty() || inputSec.isEmpty() || inputMil.isEmpty()) {
-			good = false;
+		if (error == 0) {
+			good = true;
 		}
 		if (!good) {
-			System.out.println("bad input");
+			System.out.print(error);
 		}
 		return good;
 	}

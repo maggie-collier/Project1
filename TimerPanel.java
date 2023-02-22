@@ -47,7 +47,6 @@ public class TimerPanel extends JPanel {
 	
 	// constructor
 	public TimerPanel() {
-		System.out.println("Inside timerPanel constructor");
 		// Instantiate a stopwatch (object). Will need ones with different parameters
 		stopwatch = new StopWatch();
 
@@ -173,47 +172,45 @@ public class TimerPanel extends JPanel {
 
 		
 			if (event.getSource() == startButton) {
-				System.out.println("press start");
 				javaTimer.start();
 			}
 
 			if (event.getSource() == stopButton) {
-				System.out.println("press stop");
 				javaTimer.stop();
 			}
 
 			if (event.getSource() == addButton) {
-				System.out.println("press add");
-				if (stopwatch.checkInput(inputMin, inputSec, inputMil, true) == true) {
+				if (stopwatch.checkInput(inputMin, inputSec, inputMil)) {
 					stopwatch.add(inputMin, inputSec, inputMil);
 					timerLabel.setText(stopwatch.displayTime());
-					minutesField.setText("0");
-					secondsField.setText("0");
-					millisecondsField.setText("0");
 				}
 				else {
-					System.out.println("bad input");
+					System.out.println(" bad input");
 				}
+				minutesField.setText("0");
+				secondsField.setText("0");
+				millisecondsField.setText("0");
 			}
-		
+		// 
 
 			if (event.getSource() == subButton) {
-				System.out.println("press sub");
-				// if (stopwatch.checkInput(inputMin, inputSec, inputMil, true))
+				if (stopwatch.checkInput(inputMin, inputSec, inputMil)) {
 					stopwatch.sub(inputMin, inputSec, inputMil);
 					timerLabel.setText(stopwatch.displayTime());
-					minutesField.setText("0");
-					secondsField.setText("0");
-					millisecondsField.setText("0");
+				}
+				else {
+					System.out.println(" bad input");
+				}
+				minutesField.setText("0");
+				secondsField.setText("0");
+				millisecondsField.setText("0");
 			}
 
 			if (event.getSource() == saveButton) {
-				System.out.println("press save");
 				stopwatch.save();
 			}
 
 			if (event.getSource() == loadButton) {
-				System.out.println("press load");
 				try {
 					timerLabel.setText(stopwatch.load());
 				} catch (IOException e) {
@@ -224,7 +221,6 @@ public class TimerPanel extends JPanel {
 			}
 
 			if (event.getSource() == resetButton) {
-				System.out.println("press reset");
 				// event.getSource() == stopButton;
 				timerLabel.setText("00:00:000");
 				stopwatch.reset();
