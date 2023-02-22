@@ -57,3 +57,34 @@ I have my own unit test file that I am not putting in this repo yet because it's
 Here is an example of what that finished GUI might look like in the end:
 
 ![./example_solution.png](./example_solution.png)
+
+## How to test the code
+Download the `junit.jar` file found here:
+
+https://search.maven.org/search?q=g:junit%20AND%20a:junit
+
+Download the `hamcrest.jar` file found here:
+
+https://search.maven.org/artifact/org.hamcrest/hamcrest-core/1.3/jar
+
+Move those files to a location on your computer that's easy to get to. Maybe in your coding folder? Something like `C:\Coding\lib`. The `lib` folder is short for "library" and often used to store such files. 
+
+When you compile, you'll need to add these `.jar` files to your "classpath". This basically tells the compiler where to look for extra files. In an example that worked for me, you could do:
+
+`javac -cp "../lib/junit-4.13.2.jar;../lib/hamcrest-core-1.3.jar" *.java`
+
+This assumes you're running `javac` out of the location of the `*.java` files for your project. You might need to adjust the paths accordingly. Note that there is a `;` between the two `.jar` files in the classpath. If you were to run this in a command prompt and not bash shell, you'd need to change it to a `:`. This is just good information to know for how other projects might build their code. 
+
+You know it'll work if you run it and it yells at you for a variety of the tests. If it says something about not finding `@Test`, something is still wrong. 
+
+Once it compiles, you can run the tests like this:
+
+`java -cp "../lib/junit-4.13.2.jar;../lib/hamcrest-core-1.3.jar" org.junit.runner.JUnitCore TestStopWatch`
+
+Mine didn't compile, so I'm going off of what I see online and what worked for compiling. 
+
+You also can use VS Code's testing options. They're honestly not bad. Go here:
+
+![./vs_code_test_env.png](vs_code_test_env.png)
+
+Then you'll want to set up a test environment. You'll be able to run all tests or run individual tests by going to the file and clicking the green play button. You can run all tests by clicking the play to the right of the `TestStopWatch` icon in the test explorer.
