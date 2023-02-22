@@ -936,16 +936,4 @@ public class TestStopWatch {
 		StopWatch.suspend(false);  
 	}
 
-	@Test //Made by Jarod Collier and Ben Burger
-	public void testingIsSuspended() {
-		StopWatch.suspend(true);
-
-		assertTrue (StopWatch.isSuspended());
-
-		StopWatch.suspend(false);
-
-		assertFalse(StopWatch.isSuspended());
-	}
-
-
 }

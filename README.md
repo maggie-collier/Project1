@@ -88,3 +88,10 @@ You also can use VS Code's testing options. They're honestly not bad. Go here:
 ![./vs_code_test_env.png](vs_code_test_env.png)
 
 Then you'll want to set up a test environment. You'll be able to run all tests or run individual tests by going to the file and clicking the green play button. You can run all tests by clicking the play to the right of the `TestStopWatch` icon in the test explorer.
+
+For the tests that require you to suspend the stopwatches, there is a requirement that it needs to stop all instances just by setting 
+the function to true. The hint I can give you is that this is a Static function:
+
+`StopWatch.suspend(true);`
+
+You might need to investigate this further to pass this test.
