@@ -170,6 +170,7 @@ public class TimerPanel extends JPanel {
 			String inputMin = minutesField.getText();
 			String inputSec = secondsField.getText();
 			String inputMil = millisecondsField.getText();
+
 		
 			if (event.getSource() == startButton) {
 				System.out.println("press start");
@@ -183,20 +184,27 @@ public class TimerPanel extends JPanel {
 
 			if (event.getSource() == addButton) {
 				System.out.println("press add");
-				stopwatch.add(inputMin, inputSec, inputMil);
-				timerLabel.setText(stopwatch.displayTime());
-				minutesField.setText("0");
-				secondsField.setText("0");
-				millisecondsField.setText("0");
+				if (stopwatch.checkInput(inputMin, inputSec, inputMil, true) == true) {
+					stopwatch.add(inputMin, inputSec, inputMil);
+					timerLabel.setText(stopwatch.displayTime());
+					minutesField.setText("0");
+					secondsField.setText("0");
+					millisecondsField.setText("0");
+				}
+				else {
+					System.out.println("bad input");
+				}
 			}
+		
 
 			if (event.getSource() == subButton) {
 				System.out.println("press sub");
-				stopwatch.sub(inputMin, inputSec, inputMil);
-				timerLabel.setText(stopwatch.displayTime());
-				minutesField.setText("0");
-				secondsField.setText("0");
-				millisecondsField.setText("0");
+				// if (stopwatch.checkInput(inputMin, inputSec, inputMil, true))
+					stopwatch.sub(inputMin, inputSec, inputMil);
+					timerLabel.setText(stopwatch.displayTime());
+					minutesField.setText("0");
+					secondsField.setText("0");
+					millisecondsField.setText("0");
 			}
 
 			if (event.getSource() == saveButton) {

@@ -97,45 +97,33 @@ public class StopWatch {
 		this.milliseconds += timeDelay;
 	}
 
-	// public void checkTime() {
-	// 	if (this.minutes < 0) {
-	// 		// this.seconds = this.seconds + (60 * Math.abs(0 - this.minutes));
-	// 		this.minutes = 0;
-	// 	}
-	// 	if (this.seconds < 0) {
-	// 		if (this.minutes > 0) {
-	// 			this.minutes = this.minutes - (Math.floor(Integer.parseInt(Math.abs(this.seconds))) / 60);
-	// 			this.seconds = 60 - Math.abs(this.seconds);
-	// 			}
-	// 		}
-	// 		else {
-	// 			this.seconds = 0;
-	// 		}
-	// 	}
-	// 	if (this.milliseconds < 0) {
-	// 		if (this.seconds > 0) {
-	// 			this.seconds = this.seconds - 1;
-	// 			this.milliseconds = 1000 = Math.abs(this.milliseconds);
-	// 		}
-	// 		else {
-	// 			this.milliseconds = 0;
-	// 		}
-	// 	}
-
-// 		}
-// // bad input
-// 		// if (this.milliseconds < 0 && this.minutes == 0 && this.seconds == 0) {
-// 		// 	this.milliseconds = 0;
-// 		// }
-// 	}
-
-	public void add(String inputMin, String inputSec, String inputMil) {
-		this.minutes += Integer.parseInt(inputMin);
-		this.seconds += Integer.parseInt(inputSec);
-		this.milliseconds += Integer.parseInt(inputMil);
+	public boolean checkInput(String inputMin, String inputSec, String inputMil, boolean good) {
+		String inputs = inputMin + inputSec + inputMil;
+		System.out.println("checking input");
+		if (!inputs.isEmpty()) {
+			for (int i = 0; i < inputs.length(); i++) {
+				if (!Character.isDigit(inputs.charAt(i))) {
+					good = false;
+				}
+				if(inputs.charAt(i) == '-') {
+					good = false;
+				}
+				else {
+					good = true;
+				}
+			}
+		}
+		if (inputMin.isEmpty() || inputSec.isEmpty() || inputMil.isEmpty()) {
+			good = false;
+		}
+		if (!good) {
+			System.out.println("bad input");
+		}
+		return good;
 	}
 
-	public void sub(String inputMin, String inputSec, String inputMil) {
+
+	public void checkTime(String inputMin, String inputSec, String inputMil, boolean adding) {
 		int msecMin = this.minutes * 60000;
 		int msecSec = this.seconds * 1000;
 
@@ -145,23 +133,31 @@ public class StopWatch {
 		int mInput = msecInputMin + msecInputSec + msecInputMil;
 
 		int totalTime = msecMin + msecSec + this.milliseconds;
-		int finalTime = totalTime - mInput;
+		int finalTime = totalTime;
 
-		this.minutes = finalTime / 60000;
-		this.seconds = finalTime - (this.minutes * 60000) / 1000;
-		this.milliseconds = finalTime - (this.minutes * 60000) % 1000; 
-		
-		// this.minutes = this.minutes - Integer.parseInt(inputMin);
-		// this.seconds = this.seconds - Integer.parseInt(inputSec);
-		// this.milliseconds = this.milliseconds - Integer.parseInt(inputMil);	
+		if (adding) {
+			finalTime += mInput;
+		}
+	
+		if (!adding) {
+			finalTime -= mInput;
+		}
 
-		// this.minutes = minOnTimer - inputMin - minsToSecs
-		// this.seconds = secOnTimer - inputSec - secsToMils + minsToSecs
-		// this.milliseconds = msecOnTimer - inputMil + secsToMils
-		// this.minutes = ((this.minutes * 60) + this.seconds - (Integer.parseInt(inputMin) * 60) - Integer.parseInt(inputSec)) / 60;
-		// this.seconds = this.seconds - (((this.minutes * 60) + this.seconds - (Integer.parseInt(inputMin) * 60) - Integer.parseInt(inputSec))  % 60); 
-		// }
-		
+		int a = finalTime / 60000;
+		int b = (finalTime - (a * 60000)) / 1000;
+		int c = (finalTime - (a * 60000)) % 1000; 
+
+		this.minutes = a;
+		this.seconds = b;
+		this.milliseconds = c; 
+	}
+
+	public void add(String inputMin, String inputSec, String inputMil) {
+		checkTime(inputMin, inputSec, inputMil, true);
+	}
+
+	public void sub(String inputMin, String inputSec, String inputMil) {
+		checkTime(inputMin, inputSec, inputMil, false);	
 	}
 
 	public void reset() {
