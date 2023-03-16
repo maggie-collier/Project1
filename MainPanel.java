@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -34,6 +35,12 @@ public class MainPanel extends JPanel {
 		ButtonListener buttonListen = new ButtonListener();
 		pauseButton.addActionListener(buttonListen);
 		
+		timerPanel1.setBackground(Color.LIGHT_GRAY);
+		timerPanel2.setBackground(Color.LIGHT_GRAY);
+		timerPanel3.setBackground(Color.LIGHT_GRAY);
+
+		// pauseButton.setBackground(Color.YELLOW);
+
 		// Set location for an element and add it
 		loc.gridx = 0;
 		loc.gridy = 0;

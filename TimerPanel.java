@@ -2,7 +2,11 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.print.FlavorException;
 import javax.swing.*;
+import javax.swing.text.AttributeSet.ColorAttribute;
+
 import java.lang.Integer;
 import java.lang.String;
 import java.io.*;
@@ -64,6 +68,11 @@ public class TimerPanel extends JPanel {
 		saveButton = new JButton("Save");
 		loadButton = new JButton("Load");
 		resetButton = new JButton("Reset");
+
+		// Button qualities
+		// startButton.setBackground(Color.green);
+		// stopButton.setBackground(Color.RED);
+		// resetButton.setBackground(Color.PINK);
 
 		// Create a field for time input
 		minutesField = new JTextField (4);
@@ -155,7 +164,7 @@ public class TimerPanel extends JPanel {
 		public void actionPerformed (ActionEvent event) {
 			
 			stopwatch.add(TIME_DELAY);
-			timerLabel.setText(stopwatch.displayTime());
+			timerLabel.setText(stopwatch.displayTime(false));
 			
 			// timerLabel.setText(stopwatch.displayTime());
 			
@@ -182,7 +191,7 @@ public class TimerPanel extends JPanel {
 			if (event.getSource() == addButton) {
 				if (stopwatch.checkInput(inputMin, inputSec, inputMil)) {
 					stopwatch.add(inputMin, inputSec, inputMil);
-					timerLabel.setText(stopwatch.displayTime());
+					timerLabel.setText(stopwatch.displayTime(false));
 				}
 				else {
 					System.out.println(" bad input");
@@ -196,7 +205,7 @@ public class TimerPanel extends JPanel {
 			if (event.getSource() == subButton) {
 				if (stopwatch.checkInput(inputMin, inputSec, inputMil)) {
 					stopwatch.sub(inputMin, inputSec, inputMil);
-					timerLabel.setText(stopwatch.displayTime());
+					timerLabel.setText(stopwatch.displayTime(false));
 				}
 				else {
 					System.out.println(" bad input");
@@ -212,12 +221,15 @@ public class TimerPanel extends JPanel {
 
 			if (event.getSource() == loadButton) {
 				try {
-					timerLabel.setText(stopwatch.load());
+					String loadValue = stopwatch.load();
+					timerLabel.setText(loadValue);
+					stopwatch.loadTime(loadValue, TIME_DELAY);
+					timerLabel.setText(stopwatch.displayTime(true));
+					// stopwatch.add(TIME_DELAY);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			
 			}
 
 			if (event.getSource() == resetButton) {

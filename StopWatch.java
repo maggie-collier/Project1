@@ -162,9 +162,26 @@ public class StopWatch {
 	public void add(String inputMin, String inputSec, String inputMil) {
 		checkTime(inputMin, inputSec, inputMil, true);
 	}
-
+	
 	public void sub(String inputMin, String inputSec, String inputMil) {
 		checkTime(inputMin, inputSec, inputMil, false);	
+	}
+	public void loadTime(String loadValue, int timeDelay) {
+		
+		String[] arrOfStr = loadValue.split(":");
+
+		int lMSmin = (Integer.parseInt(arrOfStr[0]) * 60000);
+		int lMSsec = (Integer.parseInt(arrOfStr[1]) * 1000);
+		int lMSmil = Integer.parseInt(arrOfStr[2]);
+
+		System.out.println("min in ms: " + lMSmin);
+		System.out.println("sec in ms: " + lMSsec);
+		System.out.println("mil: " + lMSmil);
+		
+		int lTime = lMSmin + lMSsec + lMSmil;
+		System.out.println("total ms: " + lTime);
+		this.milliseconds = lTime;
+		System.out.println("loadTime this.milliseconds: " + this.milliseconds);
 	}
 
 	public void reset() {
@@ -173,12 +190,25 @@ public class StopWatch {
 		this.milliseconds = 0;
 	}
 
-	public String displayTime() {	
+	public String displayTime(boolean load) {	
 		
+		if (load) {
+			int a = this.milliseconds / 60000;
+			int b = (this.milliseconds - (a * 60000)) / 1000;
+			int c = (this.milliseconds - (a * 60000)) % 1000; 
+			System.out.println("c");
+			System.out.println(c);
+			this.minutes = a;
+			this.seconds = b;
+			this.milliseconds = c;
+			System.out.println("t.m: " + this.milliseconds + " c: " + c);
+			load = false;
+		}
+
 		digMin = "" + this.minutes;
 		digSec = "" + this.seconds;
 		digMil = "" + this.milliseconds;
-
+		
 		if (this.milliseconds > 999) {
 			this.seconds++;
 			this.milliseconds = 0;
@@ -225,6 +255,7 @@ public class StopWatch {
 		String loadValue = Files.readString(Project1Text);
 		System.out.println(loadValue);
 		return loadValue;
+		// loadTime(loadValue, milliseconds);
 	}
 
 	// TODO: DELETE ME LATER
@@ -232,7 +263,6 @@ public class StopWatch {
 	// if you don't have the GUI set up yet and you'd like to play around.
 	public static void main (String[] args) {
 		StopWatch stopwatch = new StopWatch();
-
 	}
 
 
