@@ -222,8 +222,10 @@ public class TimerPanel extends JPanel {
 			}
 
 			if (event.getSource() == loadButton) {
+				String fileName = JOptionPane.showInputDialog("Enter the file name to load your time.");
+				System.out.println(fileName);
 				try {
-					String loadValue = stopwatch.load();
+					String loadValue = stopwatch.load(fileName);
 					timerLabel.setText(loadValue);
 					stopwatch.loadTime(loadValue, TIME_DELAY);
 					timerLabel.setText(stopwatch.displayTime(true));

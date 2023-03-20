@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -236,10 +237,13 @@ public void reset() {
 	}
 	
 	public void save(String fileName) {
+		String savedFileName = "";
+		String plswork = "";
 		try {
 			File savedFile = new File(fileName + ".txt");
 			if (savedFile.createNewFile()) {
-				String savedFileName = savedFile.getName();
+				savedFileName = savedFile.getName();
+				plswork = "C:\\Coding\\Project1\\" + savedFileName;
 				System.out.println("File created: " + savedFileName);
 			}
 			else {
@@ -250,8 +254,9 @@ public void reset() {
 			System.out.println("Error");
 			e.printStackTrace();
 		}
-		Path path = Paths.get("C:\\Coding\\Project1\\savedFileName");
+		Path path = Paths.get(plswork);
 		String str = timeDisplay;
+		System.out.println(path + ", " + str);
 		try {
 			Files.writeString(path, str, StandardCharsets.UTF_8);
 		}
@@ -260,12 +265,22 @@ public void reset() {
 		}
 	}
 	
-	public String load() throws IOException {
-		Path Project1Text = Path.of("C:\\Coding\\Project1\\savedFileName");
-		String loadValue = Files.readString(Project1Text);
-		System.out.println(loadValue);
+	public String load(String fileName) throws IOException {
+		// String loadedFileName = "";
+		String loadValue = "";
+		try {
+			String work = "C:\\Coding\\Project1\\" + fileName + ".txt";
+			Path loadedText = Path.of(work);
+			loadValue = Files.readString(loadedText);
+			System.out.println(loadValue);
+		}
+		catch (NoSuchFileException ex) {
+			System.out.println("Invalid File");
+		}
+		catch (IOException ex) {
+			System.out.println("Invalid IO");
+		}
 		return loadValue;
-		// loadTime(loadValue, milliseconds);
 	}
 
 	// TODO: DELETE ME LATER
