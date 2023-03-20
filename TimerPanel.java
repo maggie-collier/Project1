@@ -216,7 +216,9 @@ public class TimerPanel extends JPanel {
 			}
 
 			if (event.getSource() == saveButton) {
-				stopwatch.save();
+				String fileName = JOptionPane.showInputDialog("Enter a file name to save your time.");
+				System.out.println(fileName);
+				stopwatch.save(fileName);
 			}
 
 			if (event.getSource() == loadButton) {

@@ -8,7 +8,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import javax.swing.JOptionPane;
+// import javax.swing.JButton;
+// import javax.swing.JFrame;
+// import javax.swing.JOptionPane;
+
+// import TimerPanel.ButtonListener;
 
 /**********************************************************************
   Creates the methods for our StopWatch.
@@ -166,29 +170,24 @@ public class StopWatch {
 	public void sub(String inputMin, String inputSec, String inputMil) {
 		checkTime(inputMin, inputSec, inputMil, false);	
 	}
-	public void loadTime(String loadValue, int timeDelay) {
-		
-		String[] arrOfStr = loadValue.split(":");
 
-		int lMSmin = (Integer.parseInt(arrOfStr[0]) * 60000);
-		int lMSsec = (Integer.parseInt(arrOfStr[1]) * 1000);
-		int lMSmil = Integer.parseInt(arrOfStr[2]);
+public void loadTime(String loadValue, int timeDelay) {
+	
+	String[] arrOfStr = loadValue.split(":");
+	
+	int lMSmin = (Integer.parseInt(arrOfStr[0]) * 60000);
+	int lMSsec = (Integer.parseInt(arrOfStr[1]) * 1000);
+	int lMSmil = Integer.parseInt(arrOfStr[2]);
+	
+	int lTime = lMSmin + lMSsec + lMSmil;
+	this.milliseconds = lTime;
+}
 
-		System.out.println("min in ms: " + lMSmin);
-		System.out.println("sec in ms: " + lMSsec);
-		System.out.println("mil: " + lMSmil);
-		
-		int lTime = lMSmin + lMSsec + lMSmil;
-		System.out.println("total ms: " + lTime);
-		this.milliseconds = lTime;
-		System.out.println("loadTime this.milliseconds: " + this.milliseconds);
-	}
-
-	public void reset() {
-		this.minutes = 0;
-		this.seconds = 0;
-		this.milliseconds = 0;
-	}
+public void reset() {
+	this.minutes = 0;
+	this.seconds = 0;
+	this.milliseconds = 0;
+}
 
 	public String displayTime(boolean load) {	
 		
@@ -196,12 +195,9 @@ public class StopWatch {
 			int a = this.milliseconds / 60000;
 			int b = (this.milliseconds - (a * 60000)) / 1000;
 			int c = (this.milliseconds - (a * 60000)) % 1000; 
-			System.out.println("c");
-			System.out.println(c);
 			this.minutes = a;
 			this.seconds = b;
 			this.milliseconds = c;
-			System.out.println("t.m: " + this.milliseconds + " c: " + c);
 			load = false;
 		}
 
@@ -213,7 +209,7 @@ public class StopWatch {
 			this.seconds++;
 			this.milliseconds = 0;
 		}
-
+		
 		if (this.seconds > 59) {
 			this.minutes++;
 			this.seconds = 0;
@@ -222,25 +218,39 @@ public class StopWatch {
 		if (this.minutes < 10) {
 			digMin = "0" + this.minutes;
 		}
-
+		
 		if (this.seconds < 10) {
 			digSec = "0" + this.seconds;
 		}
-
+		
 		if (this.milliseconds < 100) {
 			digMil = "0" + this.milliseconds;
 		}
-
+		
 		if (this.milliseconds < 10) {
 			digMil = "00" + this.milliseconds;
 		}
-
+		
 		timeDisplay = "" + digMin + ":" + digSec + ":" + digMil;
 		return timeDisplay;
 	}
-
-	public void save() {
-		Path path = Paths.get("C:\\Coding\\Project1\\Project1Text.txt");
+	
+	public void save(String fileName) {
+		try {
+			File savedFile = new File(fileName + ".txt");
+			if (savedFile.createNewFile()) {
+				String savedFileName = savedFile.getName();
+				System.out.println("File created: " + savedFileName);
+			}
+			else {
+				System.out.println("File already exists. ");
+			}
+		}
+		catch (IOException e) {
+			System.out.println("Error");
+			e.printStackTrace();
+		}
+		Path path = Paths.get("C:\\Coding\\Project1\\savedFileName");
 		String str = timeDisplay;
 		try {
 			Files.writeString(path, str, StandardCharsets.UTF_8);
@@ -249,9 +259,9 @@ public class StopWatch {
 			System.out.println("Invalid Path");
 		}
 	}
-
+	
 	public String load() throws IOException {
-		Path Project1Text = Path.of("C:\\Coding\\Project1\\Project1Text.txt");
+		Path Project1Text = Path.of("C:\\Coding\\Project1\\savedFileName");
 		String loadValue = Files.readString(Project1Text);
 		System.out.println(loadValue);
 		return loadValue;
