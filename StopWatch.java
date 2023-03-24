@@ -40,18 +40,34 @@ public class StopWatch {
 	 *****************************************************************/
 	public StopWatch() {
 		super();
-
-		// Set what happens when you create a default stopwatch class
-		// Suggestion: Maybe set your instance variables to a good default?
-		// I removed others, but it's obvious you'll need a "minutes" variable,
-		// so we will set it to 0 when you create a new StopWatch object.
-
-		this.minutes = 0;
-		this.seconds = 0;
-		this.milliseconds = 0;
-
+			this.minutes = 0;
+			this.seconds = 0;
+			this.milliseconds = 0;
 	}
-
+	
+	public StopWatch(int minutes, int seconds, int milliseconds) {
+		super();
+		System.out.println("inside constructor, 3V");
+		stopWatchHelper(minutes, seconds, milliseconds);
+	}
+	
+	public StopWatch(int seconds, int milliseconds) {
+		super();
+		System.out.println("inside constructor, 2V");
+		stopWatchHelper(seconds, milliseconds);
+	}
+	
+	public StopWatch(int milliseconds) {
+		super();
+		System.out.println("inside constructor, 1V");
+		stopWatchHelper(milliseconds);
+	}
+	
+	public StopWatch(String timeInput) {
+		super();
+		System.out.println("inside timeInput");
+		stopWatchHelper(timeInput);
+	}
 
 	// The following two functions are called "getters" and "setters"
 	// You should probably read a little bit about them. The tldr is that
@@ -97,6 +113,12 @@ public class StopWatch {
 		this.milliseconds = milliseconds;
 	}
 
+	public String toString() {
+		System.out.println("inside toString");
+		String outputTimeDisplay = displayTime(false);
+		return outputTimeDisplay;
+	}
+
 	public void add(int timeDelay) {
 		this.milliseconds += timeDelay;
 	}
@@ -105,7 +127,6 @@ public class StopWatch {
 		String inputs = inputMin + inputSec + inputMil;
 		boolean good = false;
 		int error = 0;
-		System.out.println("checking input");
 		if (inputMin.isEmpty()) {
 			error++;
 		}
@@ -134,6 +155,41 @@ public class StopWatch {
 		return good;
 	}
 
+public boolean checkInput(String timeInput) {
+	System.out.println("inside checkInput");
+	boolean good = false;
+	int error = 0;
+	int colons = 0;
+	if (timeInput.isEmpty()) {
+		error++;
+	}
+		if (!timeInput.isEmpty()) {
+			for (int i = 0; i < timeInput.length(); i++) {
+				if (!Character.isDigit(timeInput.charAt(i)) && timeInput.charAt(i) != ':') {
+					error++;
+				}
+				if (timeInput.charAt(i) == '-') {
+					error++;
+				}
+				if (timeInput.charAt(i) == ':') {
+					colons++;
+				}
+				if (timeInput.charAt(i) == ':' && timeInput.length() == 1) {
+					error++;
+				}
+			}
+		}
+		if (error == 0) {
+			good = true;
+		}
+		// if (colons <= 2) {
+		// 	good = true;
+		// }
+		if (!good) {
+			System.out.println("check Input errors: " + error);
+		}
+		return good;	
+}
 
 	public void checkTime(String inputMin, String inputSec, String inputMil, boolean adding) {
 		int msecMin = this.minutes * 60000;
@@ -202,6 +258,8 @@ public void reset() {
 			load = false;
 		}
 
+		System.out.println("inside displayTime");
+
 		digMin = "" + this.minutes;
 		digSec = "" + this.seconds;
 		digMil = "" + this.milliseconds;
@@ -218,6 +276,7 @@ public void reset() {
 
 		if (this.minutes < 10) {
 			digMin = "0" + this.minutes;
+			System.out.println(digMin);
 		}
 		
 		if (this.seconds < 10) {
@@ -283,12 +342,119 @@ public void reset() {
 		return loadValue;
 	}
 
-	// TODO: DELETE ME LATER
-	// You can use this main function for testing if you'd like. This might be easier
-	// if you don't have the GUI set up yet and you'd like to play around.
-	public static void main (String[] args) {
-		StopWatch stopwatch = new StopWatch();
+	private void stopWatchHelper(int minutes, int seconds, int milliseconds) {
+		System.out.println("inside helper, 3V");	
+		if (minutes >= 0) {
+			this.minutes = minutes;
+		}
+		else {
+			throw new IllegalArgumentException();
+		}
+		
+		if (seconds >= 0 && seconds <= 59) {
+			this.seconds = seconds;
+		}
+		else {
+			throw new IllegalArgumentException();
+		}
+		
+		if (milliseconds >= 0 && milliseconds <= 999) {
+			this.milliseconds = milliseconds;
+		}
+		else {
+			throw new IllegalArgumentException();
+		}
 	}
 
+	private void stopWatchHelper(int seconds, int milliseconds) {
+		System.out.println("inside helper, 2V");	
+		
+		if (seconds >= 0 && seconds <= 59) {
+			this.seconds = seconds;
+		}
+		else {
+			throw new IllegalArgumentException();
+		}
+		
+		if (milliseconds >= 0 && milliseconds <= 999) {
+			this.milliseconds = milliseconds;
+		}
+		else {
+			throw new IllegalArgumentException();
+		}
+	}
 
+	private void stopWatchHelper(int milliseconds) {
+		System.out.println("inside helper, 1V");	
+		
+		if (milliseconds >= 0 && milliseconds <= 999) {
+			this.milliseconds = milliseconds;
+		}
+		else {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	private void stopWatchHelper(String timeInput) {
+		System.out.println("inside helper, S");	
+		
+		if (checkInput(timeInput) == true) {
+
+		// System.out.println(Integer.parseInt(timeInput) + ", " + Math.round(Integer.parseInt(timeInput)));
+		// if (Integer.parseInt(timeInput) == Math.round(Integer.parseInt(timeInput))) {
+			String[] arrOfTimeInput = timeInput.split(":");
+			int arrLength = arrOfTimeInput.length;
+			int minutes = 0;
+			int seconds = 0;
+			int milliseconds = 0;
+
+			System.out.println(arrLength);
+			
+			if (arrLength >= 1) {
+				milliseconds = Integer.parseInt(arrOfTimeInput[arrLength - 1]);
+				System.out.println(milliseconds);
+			}
+
+			if (arrLength > 1) {
+				seconds = Integer.parseInt(arrOfTimeInput[arrLength - 2]);
+				System.out.println(seconds);
+			}	
+				
+			if (arrLength > 2) {
+				minutes = Integer.parseInt(arrOfTimeInput[arrLength - 3]);
+				System.out.println(minutes);
+			}
+			if (minutes >= 0) {
+				this.minutes = minutes;
+			}
+			else {
+				throw new IllegalArgumentException();
+			}
+			
+			if (seconds >= 0 && seconds <= 59) {
+				this.seconds = seconds;
+			}
+			else {
+				throw new IllegalArgumentException();
+			}
+			
+			if (milliseconds >= 0 && milliseconds <= 999) {
+				this.milliseconds = milliseconds;
+			}
+			else {
+				throw new IllegalArgumentException();
+			}
+		}
+
+		else {
+			throw new IllegalArgumentException();	
+			// create pop up that says error, catch exception
+		}
+	}
+
+	public static void main (String[] args) {
+		new StopWatch("1:23:456:");
+		// System.out.println(s.toString());
+	}
 }
+

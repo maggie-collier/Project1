@@ -153,7 +153,7 @@ public class TestStopWatch {
 	@Test //Made by Jarod Collier and Ben Burger
 	public void testStringConstructor() {
 		StopWatch s = new StopWatch (5,10,300);
-		assertEquals(s.toString(),"5:10:300");
+		assertEquals(s.toString(),"05:10:300");
 
 		s = new StopWatch("20:10:8");
 		assertEquals(s.toString(),"20:10:008");
@@ -165,7 +165,7 @@ public class TestStopWatch {
 		assertEquals(s.toString(),"20:01:800");
 
 		s = new StopWatch("0:10:800");
-		assertEquals(s.toString(),"0:10:800");
+		assertEquals(s.toString(),"00:10:800");
 
 		s = new StopWatch("10:0:800");
 		assertEquals(s.toString(),"10:00:800");
@@ -183,49 +183,49 @@ public class TestStopWatch {
 		assertEquals(s.toString(),"10:49:999");
 
 		s = new StopWatch("20:800");
-		assertEquals(s.toString(),"0:20:800");
+		assertEquals(s.toString(),"00:20:800");
 
 		s = new StopWatch("20:8");
-		assertEquals(s.toString(),"0:20:008");
+		assertEquals(s.toString(),"00:20:008");
 
 		s = new StopWatch("20:80");
-		assertEquals(s.toString(),"0:20:080");
+		assertEquals(s.toString(),"00:20:080");
 
 		s = new StopWatch("2:800");
-		assertEquals(s.toString(),"0:02:800");
+		assertEquals(s.toString(),"00:02:800");
 
 		s = new StopWatch("0:800");
-		assertEquals(s.toString(),"0:00:800");
+		assertEquals(s.toString(),"00:00:800");
 
 		s = new StopWatch("10:0");
-		assertEquals(s.toString(),"0:10:000");
+		assertEquals(s.toString(),"00:10:000");
 
 		s = new StopWatch("59:200");
-		assertEquals(s.toString(),"0:59:200");
+		assertEquals(s.toString(),"00:59:200");
 
 		s = new StopWatch("20:999");
-		assertEquals(s.toString(),"0:20:999");
+		assertEquals(s.toString(),"00:20:999");
 
 		s = new StopWatch("00000020:000000999");
-		assertEquals(s.toString(),"0:20:999");
+		assertEquals(s.toString(),"00:20:999");
 
 		s = new StopWatch("200");
-		assertEquals(s.toString(),"0:00:200");
+		assertEquals(s.toString(),"00:00:200");
 
 		s = new StopWatch("80");
-		assertEquals(s.toString(),"0:00:080");
+		assertEquals(s.toString(),"00:00:080");
 
 		s = new StopWatch("8");
-		assertEquals(s.toString(),"0:00:008");
+		assertEquals(s.toString(),"00:00:008");
 
 		s = new StopWatch("0");
-		assertEquals(s.toString(),"0:00:000");
+		assertEquals(s.toString(),"00:00:000");
 
 		s = new StopWatch("999");
-		assertEquals(s.toString(),"0:00:999");
+		assertEquals(s.toString(),"00:00:999");
 
 		s = new StopWatch("00000000999");
-		assertEquals(s.toString(),"0:00:999");
+		assertEquals(s.toString(),"00:00:999");
 
 	}
 
@@ -522,6 +522,12 @@ public class TestStopWatch {
 	(expected = IllegalArgumentException.class)
 	public void testSymbolInput29() {
 		new StopWatch(">");
+	}
+
+	@Test //Made by Jarod Collier and Ben Burger 
+	(expected = IllegalArgumentException.class)
+	public void testSymbolInput29b() {
+		new StopWatch(":");
 	}
 
 	@Test //Made by Jarod Collier and Ben Burger 
