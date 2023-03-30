@@ -47,25 +47,21 @@ public class StopWatch {
 	
 	public StopWatch(int minutes, int seconds, int milliseconds) {
 		super();
-		System.out.println("inside constructor, 3V");
 		stopWatchHelper(minutes, seconds, milliseconds);
 	}
 	
 	public StopWatch(int seconds, int milliseconds) {
 		super();
-		System.out.println("inside constructor, 2V");
 		stopWatchHelper(seconds, milliseconds);
 	}
 	
 	public StopWatch(int milliseconds) {
 		super();
-		System.out.println("inside constructor, 1V");
 		stopWatchHelper(milliseconds);
 	}
 	
 	public StopWatch(String timeInput) {
 		super();
-		System.out.println("inside timeInput");
 		stopWatchHelper(timeInput);
 	}
 
@@ -119,9 +115,16 @@ public class StopWatch {
 		return outputTimeDisplay;
 	}
 
-	public void add(int timeDelay) {
-		this.milliseconds += timeDelay;
-	}
+	// public String toString(int minutes, int seconds, int milliseconds) {
+	// 	System.out.println("inside toString 3V");
+	// 	this.minutes = minutes;
+	// 	System.out.println("tS this.min " + this.minutes);
+	// 	this.seconds = seconds;
+	// 	System.out.println("tS this.sec " + this.seconds);
+	// 	System.out.println("tS this.mil " + this.milliseconds);
+	// 	String outputTimeDisplay = displayTime(false);
+	// 	return outputTimeDisplay;
+	// }	
 
 	public boolean checkInput(String inputMin, String inputSec, String inputMil) {
 		String inputs = inputMin + inputSec + inputMil;
@@ -155,26 +158,61 @@ public class StopWatch {
 		return good;
 	}
 
-public boolean checkInput(String timeInput) {
-	System.out.println("inside checkInput");
-	boolean good = false;
-	int error = 0;
-	int colons = 0;
-	if (timeInput.isEmpty()) {
-		error++;
-	}
+	public boolean checkInput(String timeInput) {
+		boolean good = false;
+		int error = 0;
+		int colons = 0;
+		if (timeInput.isEmpty()) {
+			error++;
+		}
 		if (!timeInput.isEmpty()) {
 			for (int i = 0; i < timeInput.length(); i++) {
-				if (!Character.isDigit(timeInput.charAt(i)) && timeInput.charAt(i) != ':') {
-					error++;
-				}
-				if (timeInput.charAt(i) == '-') {
+				if (!Character.isDigit(timeInput.charAt(i))) {
 					error++;
 				}
 				if (timeInput.charAt(i) == ':') {
 					colons++;
 				}
-				if (timeInput.charAt(i) == ':' && timeInput.length() == 1) {
+				if (timeInput.charAt(i) == '-') {
+					error++;
+				}
+				// cases with colons
+				if (timeInput.charAt(0) == ':') {
+					error++;
+				}
+				if (timeInput.charAt(timeInput.length() - 1) == ':'){
+					error++;
+				}
+				if (i < timeInput.length() - 1) {
+					if (timeInput.charAt(i) == ':') {
+						if (timeInput.charAt(i+1) == ':') {
+							error++;
+						}
+					}
+				}
+			}
+		}
+		if (error == 0 && colons <= 2) {
+			good = true;
+		}
+		
+		if (!good) {
+			System.out.println("check Input errors: " + error);
+		}
+
+		return good;	
+	}
+
+	public boolean checkInput(int inputMil) {
+		String inputs = "" + inputMil;
+		boolean good = false;
+		int error = 0;
+		if (!inputs.isEmpty()) {
+			for (int i = 0; i < inputs.length(); i++) {
+				if (!Character.isDigit(inputs.charAt(i))) {
+					error++;
+				}
+				if (inputs.charAt(i) == '-') {
 					error++;
 				}
 			}
@@ -182,14 +220,11 @@ public boolean checkInput(String timeInput) {
 		if (error == 0) {
 			good = true;
 		}
-		// if (colons <= 2) {
-		// 	good = true;
-		// }
 		if (!good) {
-			System.out.println("check Input errors: " + error);
+			System.out.println(error);
 		}
-		return good;	
-}
+		return good;
+	}
 
 	public void checkTime(String inputMin, String inputSec, String inputMil, boolean adding) {
 		int msecMin = this.minutes * 60000;
@@ -220,45 +255,93 @@ public boolean checkInput(String timeInput) {
 		this.milliseconds = c; 
 	}
 
+	public void checkTime(int inputMin, int inputSec, int inputMil, boolean adding) {
+		int msecMin = this.minutes * 60000;
+		int msecSec = this.seconds * 1000;
+
+		int msecInputMin = inputMin * 60000;
+		int msecInputSec = inputSec * 1000;
+		int msecInputMil = inputMil;
+		int mInput = msecInputMin + msecInputSec + msecInputMil;
+
+		int totalTime = msecMin + msecSec + this.milliseconds;
+		int finalTime = totalTime;
+
+		if (adding) {
+			finalTime += mInput;
+		}
+	
+		if (!adding) {
+			finalTime -= mInput;
+		}
+
+		int a = finalTime / 60000;
+		int b = (finalTime - (a * 60000)) / 1000;
+		int c = (finalTime - (a * 60000)) % 1000; 
+
+		this.minutes = a;
+		this.seconds = b;
+		this.milliseconds = c; 
+	}
+	public void add(int timeDelay) {
+		this.milliseconds += timeDelay;
+	}
+
+	public void add(int inputMin, int inputSec, int inputMil) {
+		checkTime(inputMin, inputSec, inputMil, true);
+	}
+
 	public void add(String inputMin, String inputSec, String inputMil) {
 		checkTime(inputMin, inputSec, inputMil, true);
+	}
+
+
+	
+	public void addTime(int inputMil) {
+		if (checkInput(inputMil) == true) {
+			checkTime(0, 0, inputMil, true);
+		}
+
+		else {
+			throw new IllegalArgumentException();	
+		}
 	}
 	
 	public void sub(String inputMin, String inputSec, String inputMil) {
 		checkTime(inputMin, inputSec, inputMil, false);	
 	}
 
-public void loadTime(String loadValue, int timeDelay) {
-	
-	String[] arrOfStr = loadValue.split(":");
-	
-	int lMSmin = (Integer.parseInt(arrOfStr[0]) * 60000);
-	int lMSsec = (Integer.parseInt(arrOfStr[1]) * 1000);
-	int lMSmil = Integer.parseInt(arrOfStr[2]);
-	
-	int lTime = lMSmin + lMSsec + lMSmil;
-	this.milliseconds = lTime;
-}
+	public void loadTime(String loadValue, int timeDelay) {
+		
+		String[] arrOfStr = loadValue.split(":");
+		
+		int lMSmin = (Integer.parseInt(arrOfStr[0]) * 60000);
+		int lMSsec = (Integer.parseInt(arrOfStr[1]) * 1000);
+		int lMSmil = Integer.parseInt(arrOfStr[2]);
+		
+		int lTime = lMSmin + lMSsec + lMSmil;
+		this.milliseconds = lTime;
+	}
 
-public void reset() {
-	this.minutes = 0;
-	this.seconds = 0;
-	this.milliseconds = 0;
+	public void reset() {
+		this.minutes = 0;
+		this.seconds = 0;
+		this.milliseconds = 0;
 }
 
 	public String displayTime(boolean load) {	
-		
 		if (load) {
 			int a = this.milliseconds / 60000;
 			int b = (this.milliseconds - (a * 60000)) / 1000;
 			int c = (this.milliseconds - (a * 60000)) % 1000; 
 			this.minutes = a;
+			System.out.println("dT this.min " + this.minutes);
 			this.seconds = b;
+			System.out.println("dT this.sec " + this.seconds);
 			this.milliseconds = c;
+			System.out.println("dT this.mil " + this.milliseconds);
 			load = false;
 		}
-
-		System.out.println("inside displayTime");
 
 		digMin = "" + this.minutes;
 		digSec = "" + this.seconds;
@@ -276,7 +359,6 @@ public void reset() {
 
 		if (this.minutes < 10) {
 			digMin = "0" + this.minutes;
-			System.out.println(digMin);
 		}
 		
 		if (this.seconds < 10) {
@@ -298,27 +380,30 @@ public void reset() {
 	public void save(String fileName) {
 		String savedFileName = "";
 		String plswork = "";
+
 		try {
 			File savedFile = new File(fileName + ".txt");
 			if (savedFile.createNewFile()) {
 				savedFileName = savedFile.getName();
 				plswork = "C:\\Coding\\Project1\\" + savedFileName;
-				System.out.println("File created: " + savedFileName);
 			}
 			else {
 				System.out.println("File already exists. ");
 			}
 		}
+
 		catch (IOException e) {
 			System.out.println("Error");
 			e.printStackTrace();
 		}
+
 		Path path = Paths.get(plswork);
 		String str = timeDisplay;
-		System.out.println(path + ", " + str);
+
 		try {
 			Files.writeString(path, str, StandardCharsets.UTF_8);
 		}
+		
 		catch (IOException ex) {
 			System.out.println("Invalid Path");
 		}
@@ -331,7 +416,6 @@ public void reset() {
 			String work = "C:\\Coding\\Project1\\" + fileName + ".txt";
 			Path loadedText = Path.of(work);
 			loadValue = Files.readString(loadedText);
-			System.out.println(loadValue);
 		}
 		catch (NoSuchFileException ex) {
 			System.out.println("Invalid File");
@@ -343,7 +427,6 @@ public void reset() {
 	}
 
 	private void stopWatchHelper(int minutes, int seconds, int milliseconds) {
-		System.out.println("inside helper, 3V");	
 		if (minutes >= 0) {
 			this.minutes = minutes;
 		}
@@ -367,8 +450,6 @@ public void reset() {
 	}
 
 	private void stopWatchHelper(int seconds, int milliseconds) {
-		System.out.println("inside helper, 2V");	
-		
 		if (seconds >= 0 && seconds <= 59) {
 			this.seconds = seconds;
 		}
@@ -385,8 +466,6 @@ public void reset() {
 	}
 
 	private void stopWatchHelper(int milliseconds) {
-		System.out.println("inside helper, 1V");	
-		
 		if (milliseconds >= 0 && milliseconds <= 999) {
 			this.milliseconds = milliseconds;
 		}
@@ -396,8 +475,6 @@ public void reset() {
 	}
 
 	private void stopWatchHelper(String timeInput) {
-		System.out.println("inside helper, S");	
-		
 		if (checkInput(timeInput) == true) {
 
 		// System.out.println(Integer.parseInt(timeInput) + ", " + Math.round(Integer.parseInt(timeInput)));
@@ -408,21 +485,16 @@ public void reset() {
 			int seconds = 0;
 			int milliseconds = 0;
 
-			System.out.println(arrLength);
-			
 			if (arrLength >= 1) {
 				milliseconds = Integer.parseInt(arrOfTimeInput[arrLength - 1]);
-				System.out.println(milliseconds);
 			}
 
 			if (arrLength > 1) {
 				seconds = Integer.parseInt(arrOfTimeInput[arrLength - 2]);
-				System.out.println(seconds);
 			}	
 				
 			if (arrLength > 2) {
 				minutes = Integer.parseInt(arrOfTimeInput[arrLength - 3]);
-				System.out.println(minutes);
 			}
 			if (minutes >= 0) {
 				this.minutes = minutes;
@@ -453,8 +525,9 @@ public void reset() {
 	}
 
 	public static void main (String[] args) {
-		new StopWatch("1:23:456:");
-		// System.out.println(s.toString());
+		StopWatch s1 = new StopWatch(5,59,300);
+		s1.addTime(-10);
+		System.out.println(s1.toString());
 	}
 }
 

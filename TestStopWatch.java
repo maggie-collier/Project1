@@ -630,17 +630,17 @@ public class TestStopWatch {
 	public void testSetMinutes() {
 		StopWatch s1 = new StopWatch();
 		s1.setMinutes(2);
-		assertEquals (s1.toString(), "2:00:000");
+		assertEquals (s1.toString(), "02:00:000");
 
 		s1 = new StopWatch(15,12,123);
 		s1.setMinutes(0);
-		assertEquals (s1.toString(), "0:12:123");
+		assertEquals (s1.toString(), "00:12:123");
 	}
 
 	@Test //Made by Jarod Collier and Ben Burger 
 	(expected = IllegalArgumentException.class)
 	public void testFailureSetMinutes() {
-		StopWatch s1 = new StopWatch("1:23:456");
+		StopWatch s1 = new StopWatch("01:23:456");
 		s1.setMinutes(-10);
 	}
 
@@ -648,15 +648,15 @@ public class TestStopWatch {
 	public void testSetSeconds() {
 		StopWatch s1 = new StopWatch();
 		s1.setSeconds(2);
-		assertEquals (s1.toString(), "0:02:000");
+		assertEquals (s1.toString(), "00:02:000");
 
 		s1 = new StopWatch();
 		s1.setSeconds(25);
-		assertEquals (s1.toString(), "0:25:000");
+		assertEquals (s1.toString(), "00:25:000");
 
 		s1 = new StopWatch();
 		s1.setSeconds(59);
-		assertEquals (s1.toString(), "0:59:000");
+		assertEquals (s1.toString(), "00:59:000");
 
 		s1 = new StopWatch(15,12,123);
 		s1.setSeconds(0);
@@ -666,14 +666,14 @@ public class TestStopWatch {
 	@Test //Made by Jarod Collier and Ben Burger 
 	(expected = IllegalArgumentException.class)
 	public void testFailureSetSeconds1() {
-		StopWatch s1 = new StopWatch("1:23:456");
+		StopWatch s1 = new StopWatch("01:23:456");
 		s1.setSeconds(-10);
 	}
 
 	@Test //Made by Jarod Collier and Ben Burger 
 	(expected = IllegalArgumentException.class)
 	public void testFailureSetSeconds2() {
-		StopWatch s1 = new StopWatch("1:23:456");
+		StopWatch s1 = new StopWatch("01:23:456");
 		s1.setSeconds(70);
 	}
 
@@ -681,19 +681,19 @@ public class TestStopWatch {
 	public void testSetMilliseconds() {
 		StopWatch s1 = new StopWatch();
 		s1.setMilliseconds(2);
-		assertEquals (s1.toString(), "0:00:002");
+		assertEquals (s1.toString(), "00:00:002");
 
 		s1 = new StopWatch();
 		s1.setMilliseconds(22);
-		assertEquals (s1.toString(), "0:00:022");
+		assertEquals (s1.toString(), "00:00:022");
 
 		s1 = new StopWatch();
 		s1.setMilliseconds(222);
-		assertEquals (s1.toString(), "0:00:222");
+		assertEquals (s1.toString(), "00:00:222");
 
 		s1 = new StopWatch();
 		s1.setMilliseconds(999);
-		assertEquals (s1.toString(), "0:00:999");
+		assertEquals (s1.toString(), "00:00:999");
 
 		s1 = new StopWatch(15,12,123);
 		s1.setMilliseconds(0);
@@ -703,33 +703,33 @@ public class TestStopWatch {
 	@Test //Made by Jarod Collier and Ben Burger 
 	(expected = IllegalArgumentException.class)
 	public void testFailureSetMilliseconds1() {
-		StopWatch s1 = new StopWatch("1:23:456");
+		StopWatch s1 = new StopWatch("01:23:456");
 		s1.setMilliseconds(-100);
 	}
 
 	@Test //Made by Jarod Collier and Ben Burger
 	(expected = IllegalArgumentException.class)
 	public void testFailureSetMilliseconds2() {
-		StopWatch s1 = new StopWatch("1:23:456");
+		StopWatch s1 = new StopWatch("01:23:456");
 		s1.setMilliseconds(10000);
 	}
 
 	@Test //Made by Jarod Collier and Ben Burger
 	public void testAddIntMethod () {
 		StopWatch s1 = new StopWatch (5,59,300);
-		s1.add(2000);
-		assertEquals (s1.toString(),"6:01:300");
+		s1.addTime(2000);
+		assertEquals (s1.toString(),"06:01:300");
 
 		s1 = new StopWatch (5,59,300);
-		s1.add(0);
-		assertEquals (s1.toString(),"5:59:300");
+		s1.addTime(0);
+		assertEquals (s1.toString(),"05:59:300");
 	}
 
 	@Test //Made by Jarod Collier and Ben Burger 
 	(expected = IllegalArgumentException.class)
 	public void AddIntMethodFailure1() {
 		StopWatch s1 = new StopWatch (5,59,300);
-		s1.add(-10);
+		s1.addTime(-10);
 	} 
 
 	@Test //Made by Jarod Collier and Ben Burger
@@ -737,12 +737,12 @@ public class TestStopWatch {
 		StopWatch s1 = new StopWatch (5,59,300);
 		StopWatch s2 = new StopWatch (2,2,300);
 		s1.add(s2);
-		assertEquals (s1.toString(),"8:01:600");
+		assertEquals (s1.toString(),"08:01:600");
 
 		s1 = new StopWatch (5,59,300);
 		s2 = new StopWatch (0,0,0);
 		s1.add(s2);
-		assertEquals (s1.toString(), "5:59:300");
+		assertEquals (s1.toString(), "05:59:300");
 	}
 
 	@Test //Made by Jarod Collier and Ben Burger
@@ -750,26 +750,26 @@ public class TestStopWatch {
 		StopWatch s1 = new StopWatch (8,1,600);
 		for (int i = 0; i < 15000; i++)
 			s1.inc();
-		assertEquals (s1.toString(),"8:16:600");
+		assertEquals (s1.toString(),"08:16:600");
 	}
 
 	@Test //Made by Jarod Collier and Ben Burger
 	public void testSubIntMethod () {
 		StopWatch s1 = new StopWatch (5,01,000);
 		s1.sub(2000);
-		assertEquals (s1.toString(),"4:59:000");
+		assertEquals (s1.toString(),"04:59:000");
 
 		s1 = new StopWatch (5,59,300);
 		s1.sub(0);
-		assertEquals (s1.toString(),"5:59:300");
+		assertEquals (s1.toString(),"05:59:300");
 
 		s1 = new StopWatch (0,00,000);
 		s1.sub(10);
-		assertEquals (s1.toString(), "0:00:000");
+		assertEquals (s1.toString(), "00:00:000");
 
 		s1 = new StopWatch (0,00,100);
 		s1.sub(200);
-		assertEquals (s1.toString(), "0:00:000");
+		assertEquals (s1.toString(), "00:00:000");
 	}
 
 	@Test //Made by Jarod Collier and Ben Burger 
@@ -785,17 +785,17 @@ public class TestStopWatch {
 		StopWatch s1 = new StopWatch (5,9,300);
 		StopWatch s2 = new StopWatch (2,59,999);
 		s1.sub(s2);
-		assertEquals (s1.toString(),"2:09:301");
+		assertEquals (s1.toString(),"02:09:301");
 
 		s1 = new StopWatch (5,59,300);
 		s2 = new StopWatch (0,0,0);
 		s1.sub(s2);
-		assertEquals (s1.toString(), "5:59:300");
+		assertEquals (s1.toString(), "05:59:300");
 
 		s1 = new StopWatch (0,0,0);
 		s2 = new StopWatch (5,59,300);
 		s1.sub(s2);
-		assertEquals (s1.toString(), "0:00:000");
+		assertEquals (s1.toString(), "00:00:000");
 	}
 
 	@Test //Made by Jarod Collier and Ben Burger
@@ -804,17 +804,17 @@ public class TestStopWatch {
 		StopWatch s1 = new StopWatch (10,11,120);
 		for (int i = 0; i < 15000; i++)
 			s1.dec();
-		assertEquals (s1.toString(),"9:56:120");
+		assertEquals (s1.toString(),"09:56:120");
 
 		s1 = new StopWatch (0,10,000);
 		for (int i = 0; i < 15000; i++)
 			s1.dec();
-		assertEquals (s1.toString(),"0:00:000");
+		assertEquals (s1.toString(),"00:00:000");
 
 		s1 = new StopWatch (0,00,000);
 		for (int i = 0; i < 15000; i++)
 			s1.dec();
-		assertEquals (s1.toString(),"0:00:000");
+		assertEquals (s1.toString(),"00:00:000");
 	}
 
 	@Test //Made by Jarod Collier and Ben Burger 
