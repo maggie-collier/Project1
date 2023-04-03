@@ -2,6 +2,9 @@ import java.text.DecimalFormat;
 
 import java.io.*;
 import java.util.Scanner;
+
+import javax.swing.JOptionPane;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -272,7 +275,12 @@ public class StopWatch {
 		}
 	
 		if (!adding) {
-			finalTime -= mInput;
+			if (finalTime >= mInput) {
+				finalTime -= mInput;
+			}
+			else {
+				finalTime = 0;
+			}
 		}
 
 		int a = finalTime / 60000;
@@ -295,7 +303,9 @@ public class StopWatch {
 		checkTime(inputMin, inputSec, inputMil, true);
 	}
 
-
+	public void add(StopWatch stopwatchObject) {
+		checkTime(stopwatchObject.minutes, stopwatchObject.seconds, stopwatchObject.milliseconds, true);
+	}
 	
 	public void addTime(int inputMil) {
 		if (checkInput(inputMil) == true) {
@@ -309,6 +319,25 @@ public class StopWatch {
 	
 	public void sub(String inputMin, String inputSec, String inputMil) {
 		checkTime(inputMin, inputSec, inputMil, false);	
+	}
+
+	public void sub(int inputMin, int inputSec, int inputMil) {
+		checkTime(inputMin, inputSec, inputMil, false);
+	}
+
+	public void sub(int inputMil) {
+		System.out.println("inside sub");
+		if (checkInput(inputMil) == true) {
+			checkTime(0, 0, inputMil, false);
+		}
+
+		else {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	public void sub(StopWatch stopwatchObject) {
+		checkTime(stopwatchObject.minutes, stopwatchObject.seconds, stopwatchObject.milliseconds, false);
 	}
 
 	public void loadTime(String loadValue, int timeDelay) {
@@ -327,7 +356,21 @@ public class StopWatch {
 		this.minutes = 0;
 		this.seconds = 0;
 		this.milliseconds = 0;
-}
+	}
+
+	public boolean equals(StopWatch stopwatchObject) {
+		boolean pass = false;
+		try {
+			if (this.minutes == stopwatchObject.minutes && this.seconds == stopwatchObject.seconds && this.milliseconds == stopwatchObject.milliseconds) {
+				pass = true;
+			}
+		}
+
+		catch (NullPointerException e) {
+			pass = false;
+		}
+		return pass;
+	}
 
 	public String displayTime(boolean load) {	
 		if (load) {
@@ -477,8 +520,6 @@ public class StopWatch {
 	private void stopWatchHelper(String timeInput) {
 		if (checkInput(timeInput) == true) {
 
-		// System.out.println(Integer.parseInt(timeInput) + ", " + Math.round(Integer.parseInt(timeInput)));
-		// if (Integer.parseInt(timeInput) == Math.round(Integer.parseInt(timeInput))) {
 			String[] arrOfTimeInput = timeInput.split(":");
 			int arrLength = arrOfTimeInput.length;
 			int minutes = 0;
@@ -521,12 +562,13 @@ public class StopWatch {
 		else {
 			throw new IllegalArgumentException();	
 			// create pop up that says error, catch exception
+			// JOptionPane.showInternalMessageDialog("Error: Illegal Argument Exception.");
 		}
 	}
 
 	public static void main (String[] args) {
-		StopWatch s1 = new StopWatch(5,59,300);
-		s1.addTime(-10);
+		StopWatch s1 = new StopWatch (0,00,000);
+		s1.sub(10);
 		System.out.println(s1.toString());
 	}
 }
