@@ -1,138 +1,140 @@
-import java.text.DecimalFormat;
-
 import java.io.*;
-import java.util.Scanner;
-
-import javax.swing.JOptionPane;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-// import javax.swing.JButton;
-// import javax.swing.JFrame;
-// import javax.swing.JOptionPane;
-
-// import TimerPanel.ButtonListener;
-
-/**********************************************************************
-  Creates the methods for our StopWatch.
-
-  @author Jarod Collier and Ben Burger
-  @version 5/11/2018
- *********************************************************************/
-
+/********************************************************************
+  Creates the methods for the stopwatch.
+********************************************************************/
 public class StopWatch {
 
-	// Use this space to create instance variables that will keep track of each timer's values
+	/******************************************************************
+	Instance variables for all stopwatch elements
+	******************************************************************/
+	
+	// Integer variables for minutes, seconds and milliseconds
 	private int minutes;
 	private int seconds;
 	private int milliseconds;
+
+	// String variables for minutes, seconds and milliseconds
 	private String digMin;
 	private String digSec;
 	private String digMil;
+
+	// String variable for running time display
 	private String timeDisplay;
 	
-	
 	/******************************************************************
-	  Default constructor for objects in StopWatch class 
-	  that sets the StopWatch to zero
-	 *****************************************************************/
+	Default constructor for objects in StopWatch class, takes no parameters
+	******************************************************************/
 	public StopWatch() {
 		super();
+
+		// Sets the stopwatch to 0
 			this.minutes = 0;
 			this.seconds = 0;
 			this.milliseconds = 0;
 	}
 	
+	/******************************************************************
+	Stopwatch constructor that takes 3 int inputs
+	******************************************************************/
 	public StopWatch(int minutes, int seconds, int milliseconds) {
 		super();
 		stopWatchHelper(minutes, seconds, milliseconds);
 	}
 	
+	/******************************************************************
+	Stopwatch constructor that takes 2 int inputs
+	******************************************************************/
 	public StopWatch(int seconds, int milliseconds) {
 		super();
 		stopWatchHelper(seconds, milliseconds);
 	}
 	
+	/******************************************************************
+	Stopwatch constructor that takes 1 int input
+	******************************************************************/
 	public StopWatch(int milliseconds) {
 		super();
 		stopWatchHelper(milliseconds);
 	}
 	
+	/******************************************************************
+	Stopwatch constructor that takes time input in string
+	******************************************************************/
 	public StopWatch(String timeInput) {
 		super();
 		stopWatchHelper(timeInput);
 	}
 
-	// The following two functions are called "getters" and "setters"
-	// You should probably read a little bit about them. The tldr is that
-	// it's good to generally have functions that will retrive your object's 
-	// instance variables or set the values instead of you directly setting them 
-	// yourself. This can be useful if when you set it, you want it to do anything else
-	// like check for incorrect values, bad user input, or if the user input type isn't how 
-	// you'd like to store the values
-
-
 	/******************************************************************
-	  Returns the minutes for the stopwatch	  
-	  @param none
-	  @return minutes integer from stopwatch
-	 *****************************************************************/
+	Returns the minutes for the stopwatch	  
+	******************************************************************/
 	public int getMinutes() {
 		return this.minutes;
 	}
 
+	/******************************************************************
+	Returns the seconds for the stopwatch	  
+	******************************************************************/
 	public int getSeconds() {
 		return this.seconds;
 	}
 
+	/******************************************************************
+	Returns the milliseconds for the stopwatch	  
+	******************************************************************/
 	public int getMilliseconds() {
 		return this.milliseconds;
 	}
 
 	/******************************************************************
-	  Sets the amount of minutes on the stopwatch
-
-	  @param minutes to be set for the StopWatch
-	  @return none
-	 *****************************************************************/
+	Sets the amount of minutes on the stopwatch
+	******************************************************************/
 	public void setMinutes(int minutes) {
 		this.minutes = minutes;
 	}
 
+	/******************************************************************
+	Sets the amount of seconds on the stopwatch
+	******************************************************************/
 	public void setSeconds(int seconds) {
 		this.seconds = seconds;
 	}	
 
+	/******************************************************************
+	Sets the amount of milliseconds on the stopwatch
+	******************************************************************/
 	public void setMilliseconds(int milliseconds) {
 		this.milliseconds = milliseconds;
 	}
 
+	/******************************************************************
+	Converts int time to a string, formatted correctly for the time display
+	******************************************************************/
 	public String toString() {
 		System.out.println("inside toString");
 		String outputTimeDisplay = displayTime(false);
 		return outputTimeDisplay;
 	}
 
-	// public String toString(int minutes, int seconds, int milliseconds) {
-	// 	System.out.println("inside toString 3V");
-	// 	this.minutes = minutes;
-	// 	System.out.println("tS this.min " + this.minutes);
-	// 	this.seconds = seconds;
-	// 	System.out.println("tS this.sec " + this.seconds);
-	// 	System.out.println("tS this.mil " + this.milliseconds);
-	// 	String outputTimeDisplay = displayTime(false);
-	// 	return outputTimeDisplay;
-	// }	
-
+	/******************************************************************
+	Checks that 3 string inputs contain only ints
+	******************************************************************/
 	public boolean checkInput(String inputMin, String inputSec, String inputMil) {
 		String inputs = inputMin + inputSec + inputMil;
+
+		// Boolean to mark if input is good
 		boolean good = false;
+
+		// Running tally of input issues
 		int error = 0;
+
+		// Checks if input fields are empty
 		if (inputMin.isEmpty()) {
 			error++;
 		}
@@ -143,6 +145,8 @@ public class StopWatch {
 			error++;
 		}
 		if (!inputs.isEmpty()) {
+
+			// Checks to see if non-empty input contains non-digit chars
 			for (int i = 0; i < inputs.length(); i++) {
 				if (!Character.isDigit(inputs.charAt(i))) {
 					error++;
@@ -152,41 +156,64 @@ public class StopWatch {
 				}
 			}
 		}
+
+		// Identifies good input if there are no errors
 		if (error == 0) {
 			good = true;
 		}
+
+		// Prints out the number of errors if bad input
 		if (!good) {
-			System.out.print(error);
+			System.out.println(error);
 		}
 		return good;
 	}
 
+	/******************************************************************
+	Checks that 1 string input contains only ints
+	******************************************************************/
 	public boolean checkInput(String timeInput) {
 		boolean good = false;
 		int error = 0;
+
+		// Running tally of : chars, as time is given in 00:00:000 format
 		int colons = 0;
+
+		// Checks if input field is empty
 		if (timeInput.isEmpty()) {
 			error++;
 		}
+
 		if (!timeInput.isEmpty()) {
+
+			// Checks to see if non-empty input contains non-digit chars
 			for (int i = 0; i < timeInput.length(); i++) {
 				if (!Character.isDigit(timeInput.charAt(i))) {
 					error++;
 				}
+
+				// Keep track of total colons
 				if (timeInput.charAt(i) == ':') {
 					colons++;
 				}
+
 				if (timeInput.charAt(i) == '-') {
 					error++;
 				}
-				// cases with colons
+
+				// Checks to see if first char is :
 				if (timeInput.charAt(0) == ':') {
 					error++;
 				}
+
+				// Checks to see if last char is :
 				if (timeInput.charAt(timeInput.length() - 1) == ':'){
 					error++;
 				}
+
 				if (i < timeInput.length() - 1) {
+
+					// Checks to see if there are two consecutive colons
 					if (timeInput.charAt(i) == ':') {
 						if (timeInput.charAt(i+1) == ':') {
 							error++;
@@ -195,10 +222,13 @@ public class StopWatch {
 				}
 			}
 		}
+
+		// Identifies good input if there are no errors and the correct number of colons
 		if (error == 0 && colons <= 2) {
 			good = true;
 		}
 		
+		// Prints out the number of errors if bad input
 		if (!good) {
 			System.out.println("check Input errors: " + error);
 		}
@@ -291,6 +321,7 @@ public class StopWatch {
 		this.seconds = b;
 		this.milliseconds = c; 
 	}
+		
 	public void add(int timeDelay) {
 		this.milliseconds += timeDelay;
 	}
@@ -340,16 +371,17 @@ public class StopWatch {
 		checkTime(stopwatchObject.minutes, stopwatchObject.seconds, stopwatchObject.milliseconds, false);
 	}
 
-	public void loadTime(String loadValue, int timeDelay) {
+	public void loadTime(String loadValue) {
 		
 		String[] arrOfStr = loadValue.split(":");
 		
-		int lMSmin = (Integer.parseInt(arrOfStr[0]) * 60000);
-		int lMSsec = (Integer.parseInt(arrOfStr[1]) * 1000);
+		int lMSmin = (Integer.parseInt(arrOfStr[0]));
+		int lMSsec = (Integer.parseInt(arrOfStr[1]));
 		int lMSmil = Integer.parseInt(arrOfStr[2]);
 		
-		int lTime = lMSmin + lMSsec + lMSmil;
-		this.milliseconds = lTime;
+		this.minutes = lMSmin;
+		this.seconds = lMSsec;
+		this.milliseconds = lMSmil;
 	}
 
 	public void reset() {
@@ -370,6 +402,43 @@ public class StopWatch {
 			pass = false;
 		}
 		return pass;
+	}
+
+	public static boolean equals(StopWatch s1, StopWatch s2) {
+		boolean pass = false;
+		if (s1.minutes == s2.minutes && s1.seconds == s2.seconds && s1.milliseconds == s2.milliseconds) {
+			pass = true;
+		}
+		return pass;
+	}
+
+	public int compareTo(StopWatch stopwatchObject) {		
+		int msecMin = this.minutes * 60000;
+		int msecSec = this.seconds * 1000;
+
+		int msecObMin = stopwatchObject.minutes * 60000;
+		int msecObSec = stopwatchObject.seconds * 1000;
+		int msecObMil = stopwatchObject.milliseconds;
+		int mInput = msecObMin + msecObSec + msecObMil;
+
+		int totalTime = msecMin + msecSec + this.milliseconds;
+		int finalTime = totalTime;
+
+		finalTime -= mInput;
+		
+		return finalTime;
+	}
+
+	public String inc() {
+		this.milliseconds++;
+		displayTime(false);
+		return timeDisplay;
+	}
+
+	public String dec() {
+		checkTime(0, 0, 1, false);
+		displayTime(false);
+		return timeDisplay;
 	}
 
 	public String displayTime(boolean load) {	
@@ -429,6 +498,7 @@ public class StopWatch {
 			if (savedFile.createNewFile()) {
 				savedFileName = savedFile.getName();
 				plswork = "C:\\Coding\\Project1\\" + savedFileName;
+				System.out.println(plswork);
 			}
 			else {
 				System.out.println("File already exists. ");
@@ -441,18 +511,24 @@ public class StopWatch {
 		}
 
 		Path path = Paths.get(plswork);
-		String str = timeDisplay;
+		String str = toString();
+		System.out.println(str);
 
 		try {
 			Files.writeString(path, str, StandardCharsets.UTF_8);
 		}
 		
 		catch (IOException ex) {
-			System.out.println("Invalid Path");
+			System.out.println("Invalid Path IO");
+		}
+
+		catch (NullPointerException ex) {
+			System.out.println("Invalid Path Null");	
 		}
 	}
 	
-	public String load(String fileName) throws IOException {
+	public String load(String fileName)  {
+	// public String load(String fileName) throws IOException {
 		// String loadedFileName = "";
 		String loadValue = "";
 		try {
@@ -460,12 +536,15 @@ public class StopWatch {
 			Path loadedText = Path.of(work);
 			loadValue = Files.readString(loadedText);
 		}
-		catch (NoSuchFileException ex) {
-			System.out.println("Invalid File");
-		}
+		// catch (NoSuchFileException ex) {
+		// 	System.out.println("Invalid File");
+		// }
 		catch (IOException ex) {
 			System.out.println("Invalid IO");
 		}
+		
+		loadTime(loadValue);
+
 		return loadValue;
 	}
 
@@ -567,9 +646,16 @@ public class StopWatch {
 	}
 
 	public static void main (String[] args) {
-		StopWatch s1 = new StopWatch (0,00,000);
-		s1.sub(10);
-		System.out.println(s1.toString());
+		StopWatch s1 = new StopWatch (5,59,300);
+		StopWatch s2 = new StopWatch (5,59,300);
+
+		s1.save("file1");
+		s1 = new StopWatch (); 
+		try {
+			s1.load("file1");
+			s1.equals(s2);
+		}
+		catch (IOException e) {}
 	}
 }
 

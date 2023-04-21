@@ -2,36 +2,28 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.print.FlavorException;
 import javax.swing.*;
-import javax.swing.text.AttributeSet.ColorAttribute;
-
-import java.lang.Integer;
 import java.lang.String;
-import java.io.*;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
-/**********************************************************************
-Creates a stop watch panel.
-
-@author Ben Burger and Jarod Collier
-@version 5/22/2018
-*********************************************************************/
-// class
+/********************************************************************
+Creates a stopwatch panel.
+********************************************************************/
 public class TimerPanel extends JPanel {
 	
-	// instance variables
-	private static final int TIME_DELAY = 10;
-	
+	/******************************************************************
+	 Instance variables for all timer panel elements
+	 *****************************************************************/
+
+	// Stopwatch object
 	private StopWatch stopwatch;
 
+	// Time interval of every 10 milliseconds, java timer and listener
+	private static final int TIME_DELAY = 10;
 	Timer javaTimer;
-	
 	private TimerListener timerListener; 
 	
+	// The buttons for the GUI
 	private JButton startButton;
 	private JButton stopButton;
 	private JButton addButton;
@@ -40,6 +32,7 @@ public class TimerPanel extends JPanel {
 	private JButton loadButton;
 	private JButton resetButton;
 	
+	// User input fields and labels for the GUI
 	private JTextField minutesField;
 	private JLabel minutesLabel;		
 	private JTextField secondsField;
@@ -47,20 +40,24 @@ public class TimerPanel extends JPanel {
 	private JTextField millisecondsField;
 	private JLabel millisecondsLabel;	
 
+	// Creates the label that displays the time kept on the stopwatch for the GUI
 	private JLabel timerLabel;
 	
-	// constructor
+	/******************************************************************
+	TimerPanel constructor
+	******************************************************************/
 	public TimerPanel() {
-		// Instantiate a stopwatch (object). Will need ones with different parameters
+
+		// Instantiates stopwatch object
 		stopwatch = new StopWatch();
 
-		// Create a listener
+		// Creates a listener
 		timerListener = new TimerListener();
 
-		// Create a timer
+		// Creates a timer
 		javaTimer = new Timer(TIME_DELAY, timerListener);
 	
-		// Create a button with text
+		// Creates buttons with text for the GUI
 		startButton = new JButton("Start");
 		stopButton = new JButton("Stop");
 		addButton = new JButton("Add");
@@ -69,28 +66,23 @@ public class TimerPanel extends JPanel {
 		loadButton = new JButton("Load");
 		resetButton = new JButton("Reset");
 
-		// Button qualities
-		// startButton.setBackground(Color.green);
-		// stopButton.setBackground(Color.RED);
-		// resetButton.setBackground(Color.PINK);
-
-		// Create a field for time input
+		// Creates the fields for time input from user
 		minutesField = new JTextField (4);
 		secondsField = new JTextField (4);
 		millisecondsField = new JTextField (4);
 		
-		// Create a label for the time input
+		// Creates labels for the time input fields
 		minutesLabel = new JLabel("(minutes)");
 		secondsLabel = new JLabel("(seconds)");
 		millisecondsLabel = new JLabel("  (milliseconds)  ");
 
-		// Create a label for the timer
+		// Creates label that displays time
 		timerLabel = new JLabel();
 		
-		// Create a listener to know what buttons are pressed
+		// Creates a listener to know what buttons are pressed
 		ButtonListener buttonListen = new ButtonListener();
 		
-		// Will need to add the buttons to the listener
+		// Adds the buttons to the listener
 		startButton.addActionListener(buttonListen);
 		stopButton.addActionListener(buttonListen);
 		addButton.addActionListener(buttonListen);
@@ -99,18 +91,24 @@ public class TimerPanel extends JPanel {
 		loadButton.addActionListener(buttonListen);
 		resetButton.addActionListener(buttonListen);
 
+		// Creates loc variable to arrange elements on the panel
 		setLayout(new GridBagLayout());
 		GridBagConstraints loc = new GridBagConstraints();
 
+		// Makes borders black
 		setBorder(BorderFactory.createLineBorder(Color.black));
-        
+
+		/****************************************************************
+		Locations of panel elements on GUI
+		****************************************************************/
+    
+		// Location of timer label, top center of panel
 		loc.gridx = 2;
 		loc.gridy = 1;
-		loc.insets.bottom = 2;
-		// loc.anchor = GridBagConstraints.LINE_END; 
+		loc.insets.bottom = 2; 
 		add(timerLabel, loc);
 		
-		// Buttons
+		// Location of buttons in 2 columns of 3
 		loc.gridx = 1;
 		loc.gridy = 3;
 		add(startButton, loc);
@@ -129,23 +127,24 @@ public class TimerPanel extends JPanel {
 		loc.gridx = 3;
 		loc.gridy = 9;
 		add(loadButton, loc);
-		loc.gridx = 2;
-		loc.gridy = 12;
-		add(resetButton, loc);
-
-	// Time
+		
+		// Location of user input box for minutes with label, centered
 		loc.gridx = 2;
 		loc.gridy = 3;
 		add(minutesField, loc);
 		loc.gridx = 2;
 		loc.gridy = 4;
 		add(minutesLabel, loc);
+		
+		// Location of user input box for seconds with label, centered, below minutes
 		loc.gridx = 2;
 		loc.gridy = 6;
 		add(secondsField, loc);
 		loc.gridx = 2;
 		loc.gridy = 7;
 		add(secondsLabel, loc);	
+		
+		// Location of user input box for milliseconds with label, centered, below seconds
 		loc.gridx = 2;
 		loc.gridy = 9;
 		add(millisecondsField, loc);
@@ -153,93 +152,125 @@ public class TimerPanel extends JPanel {
 		loc.gridy = 10;
 		add(millisecondsLabel, loc);
 		
+		// Location of reset button, bottom center of panel
+		loc.gridx = 2;
+		loc.gridy = 12;
+		add(resetButton, loc);
+
+		// Sets user input boxes to default to 0
 		minutesField.setText("0");
 		secondsField.setText("0");
 		millisecondsField.setText("0");
+
+		// Sets timer label to default to 00:00:000
 		timerLabel.setText("00:00:000");
 	} 
 	
+	// Creates a listener to keep time
 	private class TimerListener implements ActionListener {
 		
-		public void actionPerformed (ActionEvent event) {
+		/****************************************************************
+		Receives action events of timer
+		****************************************************************/
+		public void actionPerformed(ActionEvent event) {
 			
+			// Adds time every 10 milliseconds
 			stopwatch.add(TIME_DELAY);
+
+			// Displays running total time on the stopwatch
 			timerLabel.setText(stopwatch.displayTime(false));
-			
-			// timerLabel.setText(stopwatch.displayTime());
-			
-			
 		}
 	}
 
+	// Creates a listener for when GUI buttons are clicked
 	public class ButtonListener implements ActionListener {
-		
+	
+		/******************************************************************
+		Captures button clicks on the GUI
+		******************************************************************/
 		public void actionPerformed(ActionEvent event) {			
+
+			// Gets the user input and sets it to a string
 			String inputMin = minutesField.getText();
 			String inputSec = secondsField.getText();
 			String inputMil = millisecondsField.getText();
 
-		
+			// Starts the timer when start button is pressed
 			if (event.getSource() == startButton) {
 				javaTimer.start();
 			}
 
+			// Stops the timer when stop button is pressed
 			if (event.getSource() == stopButton) {
 				javaTimer.stop();
 			}
 
+			// Adds good user input to the running timer when add button is pressed
 			if (event.getSource() == addButton) {
 				if (stopwatch.checkInput(inputMin, inputSec, inputMil)) {
 					stopwatch.add(inputMin, inputSec, inputMil);
 					timerLabel.setText(stopwatch.displayTime(false));
 				}
+
+				// Guards against bad user input
 				else {
 					System.out.println(" bad input");
 				}
+
+				// Sets user input fields back to 0 after use
 				minutesField.setText("0");
 				secondsField.setText("0");
 				millisecondsField.setText("0");
 			}
-		// 
 
+			// Subtracts good user input from the running timer when sub button is pressed
 			if (event.getSource() == subButton) {
 				if (stopwatch.checkInput(inputMin, inputSec, inputMil)) {
 					stopwatch.sub(inputMin, inputSec, inputMil);
 					timerLabel.setText(stopwatch.displayTime(false));
 				}
+
+				// Guards against bad user input
 				else {
 					System.out.println(" bad input");
 				}
+
+				// Sets user input fields back to 0 after use
 				minutesField.setText("0");
 				secondsField.setText("0");
 				millisecondsField.setText("0");
 			}
 
+			// When save button is pressed, shows pop up to save time
 			if (event.getSource() == saveButton) {
 				String fileName = JOptionPane.showInputDialog("Enter a file name to save your time.");
-				System.out.println(fileName);
+
+				// Saves current time to a file by the name the user entered in pop up
 				stopwatch.save(fileName);
 			}
 
+			// When load button is pressed, shows pop up to retrieve saved time
 			if (event.getSource() == loadButton) {
 				String fileName = JOptionPane.showInputDialog("Enter the file name to load your time.");
-				System.out.println(fileName);
-				try {
+
+					// Parses contents of file name provided by user, sets to string
 					String loadValue = stopwatch.load(fileName);
+
+					// Sets the displayed time to the loaded time from saved file
 					timerLabel.setText(loadValue);
-					stopwatch.loadTime(loadValue, TIME_DELAY);
-					timerLabel.setText(stopwatch.displayTime(true));
-					// stopwatch.add(TIME_DELAY);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+
+					// Sets the timer delay to the new number of milliseconds, so it does not start counting from 0
+					timerLabel.setText(stopwatch.displayTime(false));
 			}
 
+			// When reset button is pressed, set displayed time to 00:00:000
 			if (event.getSource() == resetButton) {
-				// event.getSource() == stopButton;
 				timerLabel.setText("00:00:000");
+
+				// Resets the timer delay to 0
 				stopwatch.reset();
+
+				// Resets all user input fields to 0
 				minutesField.setText("0");
 				secondsField.setText("0");
 				millisecondsField.setText("0");
