@@ -2,11 +2,7 @@ import javax.swing.JFrame;
  
 /**********************************************************************
 Creates the StopWatch GUI.
-
-@author Ben Burger and Jarod Collier
-@version 5/22/2018
 *********************************************************************/
-
 public class StopwatchGUI
 {
     public static void main (String[] args)

@@ -178,7 +178,7 @@ public class TimerPanel extends JPanel {
 			stopwatch.add(TIME_DELAY);
 
 			// Displays running total time on the stopwatch
-			timerLabel.setText(stopwatch.displayTime(false));
+			timerLabel.setText(stopwatch.displayTime());
 		}
 	}
 
@@ -209,7 +209,7 @@ public class TimerPanel extends JPanel {
 			if (event.getSource() == addButton) {
 				if (stopwatch.checkInput(inputMin, inputSec, inputMil)) {
 					stopwatch.add(inputMin, inputSec, inputMil);
-					timerLabel.setText(stopwatch.displayTime(false));
+					timerLabel.setText(stopwatch.displayTime());
 				}
 
 				// Guards against bad user input
@@ -227,7 +227,7 @@ public class TimerPanel extends JPanel {
 			if (event.getSource() == subButton) {
 				if (stopwatch.checkInput(inputMin, inputSec, inputMil)) {
 					stopwatch.sub(inputMin, inputSec, inputMil);
-					timerLabel.setText(stopwatch.displayTime(false));
+					timerLabel.setText(stopwatch.displayTime());
 				}
 
 				// Guards against bad user input
@@ -241,7 +241,10 @@ public class TimerPanel extends JPanel {
 				millisecondsField.setText("0");
 			}
 
-			// When save button is pressed, shows pop up to save time
+			/**************************************************************
+			When save button is pressed, pop up prompts user to enter file
+			name
+			**************************************************************/
 			if (event.getSource() == saveButton) {
 				String fileName = JOptionPane.showInputDialog("Enter a file name to save your time.");
 
@@ -249,7 +252,10 @@ public class TimerPanel extends JPanel {
 				stopwatch.save(fileName);
 			}
 
-			// When load button is pressed, shows pop up to retrieve saved time
+			/**************************************************************
+			When load button is pressed, pop up prompts user to enter file
+			name to retrieve saved time
+			**************************************************************/
 			if (event.getSource() == loadButton) {
 				String fileName = JOptionPane.showInputDialog("Enter the file name to load your time.");
 
@@ -260,7 +266,7 @@ public class TimerPanel extends JPanel {
 					timerLabel.setText(loadValue);
 
 					// Sets the timer delay to the new number of milliseconds, so it does not start counting from 0
-					timerLabel.setText(stopwatch.displayTime(false));
+					timerLabel.setText(stopwatch.displayTime());
 			}
 
 			// When reset button is pressed, set displayed time to 00:00:000
