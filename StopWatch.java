@@ -118,7 +118,6 @@ public class StopWatch {
 	display string
 	******************************************************************/
 	public String toString() {
-		System.out.println("inside toString");
 		String outputTimeDisplay = displayTime();
 		return outputTimeDisplay;
 	}
