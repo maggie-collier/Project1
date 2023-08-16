@@ -64,7 +64,7 @@ public class StopWatch {
 	}
 	
 	/******************************************************************
-	Stopwatch constructor that takes time input in string
+	Stopwatch constructor that takes time input in string  
 	******************************************************************/
 	public StopWatch(String timeInput) {
 		super();
